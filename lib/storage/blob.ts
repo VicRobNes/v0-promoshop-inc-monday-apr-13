@@ -4,6 +4,7 @@ import {
   BlobServiceClient,
   ContainerSASPermissions,
   StorageSharedKeyCredential,
+  type UserDelegationKey,
   generateBlobSASQueryParameters,
 } from "@azure/storage-blob"
 import { DefaultAzureCredential } from "@azure/identity"
@@ -14,13 +15,13 @@ import { DefaultAzureCredential } from "@azure/identity"
 // imageRegistry Cosmos container (Phase 1). Phase 3 moves binary payloads
 // to Blob Storage so the Cosmos document only carries a small URL.
 //
-// Two modes:
+// Three modes:
 //
 //   1. `AZURE_STORAGE_CONNECTION_STRING` set  → use it (account key present,
 //      we can mint short-lived SAS tokens without AAD roundtrips).
 //   2. Else `AZURE_STORAGE_ACCOUNT` set        → use DefaultAzureCredential
 //      (managed identity / developer login). SAS minting falls back to the
-//      user-delegation key path.
+//      user-delegation-key path.
 //   3. Otherwise                               → not configured; callers
 //      fall back to base64 overrides (keeps dev flow working pre-provision).
 
@@ -29,7 +30,18 @@ export type BlobContainer = (typeof BLOB_CONTAINERS)[number]
 
 export const DEFAULT_CONTAINER: BlobContainer = "products"
 
+// Group strings are produced by `lib/image-registry.ts`. Keep this mapping in
+// sync with the `group` literal passed to each `slots.push({...})`. If a new
+// group is introduced and not listed here, uploads silently route to
+// DEFAULT_CONTAINER, which is not what any of our callers want.
 const CONTAINER_BY_GROUP: Record<string, BlobContainer> = {
+  Branding: "brands",
+  "Home page": "hero",
+  "About page": "hero",
+  "Team members": "team",
+  "Brand logos": "brands",
+  "Brand lifestyle": "brands",
+  // Legacy keys kept so older clients / tests don't regress.
   Products: "products",
   Brands: "brands",
   Hero: "hero",
@@ -106,6 +118,30 @@ function sanitizeName(name: string): string {
     .slice(0, 180)
 }
 
+// User-delegation key cache: the key is good for up to 7 days, and every
+// request that needs AAD-signed SAS tokens reuses it until it's within 5
+// minutes of expiry. Previously every upload made two separate delegation-key
+// round-trips (one for the write SAS, one for the read SAS).
+interface CachedUdk {
+  key: UserDelegationKey
+  expiresAt: number
+}
+let cachedUdk: CachedUdk | null = null
+const UDK_TTL_MS = 6 * 24 * 60 * 60_000 // 6 days, inside Azure's 7-day max.
+const UDK_REFRESH_THRESHOLD_MS = 5 * 60_000
+
+async function getUserDelegationKeyCached(client: BlobServiceClient): Promise<UserDelegationKey> {
+  const now = Date.now()
+  if (cachedUdk && cachedUdk.expiresAt - now > UDK_REFRESH_THRESHOLD_MS) {
+    return cachedUdk.key
+  }
+  const startsOn = new Date(now - 30_000)
+  const expiresOn = new Date(now + UDK_TTL_MS)
+  const key = await client.getUserDelegationKey(startsOn, expiresOn)
+  cachedUdk = { key, expiresAt: expiresOn.getTime() }
+  return key
+}
+
 export interface WriteSas {
   /** PUT this URL with the bytes to upload (short-lived). */
   uploadUrl: string
@@ -128,9 +164,10 @@ export interface MintWriteSasArgs {
 }
 
 /**
- * Mint a SAS URL the browser can PUT to, plus a read URL to store in
- * `imageRegistry`. When the connection string is an account-key string we
- * sign with the shared key. Otherwise we use the user-delegation key path.
+ * Mint a SAS URL the browser can PUT to, plus a long-lived read URL to store
+ * in `imageRegistry`. The two SAS tokens are signed in a single pass so that
+ * — in the AAD path — we make only one `getUserDelegationKey` round-trip per
+ * upload (and reuse it across uploads via the module-level cache).
  */
 export async function mintWriteSas(args: MintWriteSasArgs): Promise<WriteSas> {
   const client = getClient()
@@ -143,113 +180,83 @@ export async function mintWriteSas(args: MintWriteSasArgs): Promise<WriteSas> {
 
   const ttlMin = Math.max(1, Math.min(60, args.uploadTtlMinutes ?? 10))
   const now = new Date()
-  const expiresOn = new Date(now.getTime() + ttlMin * 60_000)
+  const startsOn = new Date(now.getTime() - 30_000)
+  const writeExpiresOn = new Date(now.getTime() + ttlMin * 60_000)
+  const readExpiresOn = new Date(now.getTime() + 7 * 24 * 60 * 60_000)
+
+  const writePerms = ContainerSASPermissions.parse("cw")
+  const readPerms = ContainerSASPermissions.parse("r")
 
   const conn = readConn()
-  let sas: string
+  let writeSas: string
+  let readSas: string
+  let accountName: string
 
   if (conn) {
-    const { accountName, accountKey } = parseConnectionString(conn)
-    if (!accountName || !accountKey) {
+    const parsed = parseConnectionString(conn)
+    if (!parsed.accountName || !parsed.accountKey) {
       throw new Error(
         "Connection string missing AccountName/AccountKey; cannot mint SAS without a user-delegation key.",
       )
     }
-    const cred = new StorageSharedKeyCredential(accountName, accountKey)
-    sas = generateBlobSASQueryParameters(
+    accountName = parsed.accountName
+    const cred = new StorageSharedKeyCredential(parsed.accountName, parsed.accountKey)
+    writeSas = generateBlobSASQueryParameters(
       {
         containerName: container,
         blobName: blobPath,
-        permissions: ContainerSASPermissions.parse("cw"),
-        startsOn: new Date(now.getTime() - 30_000),
-        expiresOn,
+        permissions: writePerms,
+        startsOn,
+        expiresOn: writeExpiresOn,
         contentType: args.contentType,
-        protocol: "https" as unknown as undefined,
+      },
+      cred,
+    ).toString()
+    readSas = generateBlobSASQueryParameters(
+      {
+        containerName: container,
+        blobName: blobPath,
+        permissions: readPerms,
+        startsOn,
+        expiresOn: readExpiresOn,
       },
       cred,
     ).toString()
   } else {
-    // User-delegation key path.
-    const udk = await client.getUserDelegationKey(
-      new Date(now.getTime() - 30_000),
-      new Date(now.getTime() + 15 * 60_000),
-    )
-    const accountName = readAccount()!
-    sas = generateBlobSASQueryParameters(
+    accountName = readAccount()!
+    const udk = await getUserDelegationKeyCached(client)
+    writeSas = generateBlobSASQueryParameters(
       {
         containerName: container,
         blobName: blobPath,
-        permissions: ContainerSASPermissions.parse("cw"),
-        startsOn: new Date(now.getTime() - 30_000),
-        expiresOn,
+        permissions: writePerms,
+        startsOn,
+        expiresOn: writeExpiresOn,
         contentType: args.contentType,
+      },
+      udk,
+      accountName,
+    ).toString()
+    readSas = generateBlobSASQueryParameters(
+      {
+        containerName: container,
+        blobName: blobPath,
+        permissions: readPerms,
+        startsOn,
+        expiresOn: readExpiresOn,
       },
       udk,
       accountName,
     ).toString()
   }
 
+  const readUrl = `https://${accountName}.blob.core.windows.net/${container}/${blobPath}?${readSas}`
+
   return {
-    uploadUrl: `${blobClient.url}?${sas}`,
-    // Containers are private (Phase 0 set publicAccess: 'None'), so the read
-    // URL also needs a SAS. We mint a longer-lived read-only one. In a later
-    // phase this can be swapped for an AFD/CDN origin with anonymous reads.
-    readUrl: await buildReadUrl({
-      accountName: conn ? parseConnectionString(conn).accountName! : readAccount()!,
-      accountKey: conn ? parseConnectionString(conn).accountKey : undefined,
-      container,
-      blobPath,
-      contentType: args.contentType,
-    }),
+    uploadUrl: `${blobClient.url}?${writeSas}`,
+    readUrl,
     container,
     blobPath,
-    expiresAt: expiresOn.getTime(),
+    expiresAt: writeExpiresOn.getTime(),
   }
-}
-
-async function buildReadUrl(opts: {
-  accountName: string
-  accountKey?: string
-  container: BlobContainer
-  blobPath: string
-  contentType?: string
-}): Promise<string> {
-  const now = new Date()
-  // 7-day read SAS. Refreshed whenever the admin re-uploads.
-  const expiresOn = new Date(now.getTime() + 7 * 24 * 60 * 60_000)
-  const perms = ContainerSASPermissions.parse("r")
-
-  let sas: string
-  if (opts.accountKey) {
-    const cred = new StorageSharedKeyCredential(opts.accountName, opts.accountKey)
-    sas = generateBlobSASQueryParameters(
-      {
-        containerName: opts.container,
-        blobName: opts.blobPath,
-        permissions: perms,
-        startsOn: new Date(now.getTime() - 30_000),
-        expiresOn,
-        contentType: opts.contentType,
-      },
-      cred,
-    ).toString()
-  } else {
-    const client = getClient()
-    const udk = await client.getUserDelegationKey(
-      new Date(now.getTime() - 30_000),
-      expiresOn,
-    )
-    sas = generateBlobSASQueryParameters(
-      {
-        containerName: opts.container,
-        blobName: opts.blobPath,
-        permissions: perms,
-        startsOn: new Date(now.getTime() - 30_000),
-        expiresOn,
-      },
-      udk,
-      opts.accountName,
-    ).toString()
-  }
-  return `https://${opts.accountName}.blob.core.windows.net/${opts.container}/${opts.blobPath}?${sas}`
 }
