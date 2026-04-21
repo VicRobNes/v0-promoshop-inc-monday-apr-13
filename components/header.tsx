@@ -7,6 +7,7 @@ import { Menu, X, ShoppingBag, Phone, Heart, User, Settings } from "lucide-react
 import { useLocale } from "@/lib/locale-context"
 import { HOME_CONTENT } from "@/lib/cms/home"
 import { SiteImage } from "@/components/site-image"
+import { useAuth } from "@/lib/auth/AuthProvider"
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -21,6 +22,9 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const { locale, config, setLocale } = useLocale()
+  const { isAuthenticated, roles } = useAuth()
+
+  const isAdmin = isAuthenticated && roles.includes("admin")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,14 +76,18 @@ export function Header() {
             {config.supportLineLabel}
           </a>
           <div className="hidden sm:flex items-center gap-4">
-            <Link href="/sign-in" className="flex items-center gap-1.5 text-xs font-visby hover:text-[#ef473f] transition-colors">
-              <User className="w-3 h-3" />
-              Login / Register
-            </Link>
-            <Link href="/admin" className="flex items-center gap-1.5 text-xs font-visby hover:text-[#ef473f] transition-colors">
-              <Settings className="w-3 h-3" />
-              Admin
-            </Link>
+            {isAuthenticated ? null : (
+              <Link href="/sign-in" className="flex items-center gap-1.5 text-xs font-visby hover:text-[#ef473f] transition-colors">
+                <User className="w-3 h-3" />
+                Login / Register
+              </Link>
+            )}
+            {isAdmin && (
+              <Link href="/admin" className="flex items-center gap-1.5 text-xs font-visby hover:text-[#ef473f] transition-colors">
+                <Settings className="w-3 h-3" />
+                Admin
+              </Link>
+            )}
             <Link href="/my-quote" className="flex items-center gap-1.5 text-xs font-visby hover:text-[#ef473f] transition-colors">
               <Heart className="w-3 h-3" />
               Wishlist
@@ -90,9 +98,8 @@ export function Header() {
 
       {/* Main nav */}
       <nav className="mx-auto max-w-7xl flex items-center justify-between px-6 py-3 lg:py-4 lg:px-8 border-b border-[#e5e5e5]">
-        {/* Logo — the newly-provided PromoShop studio mark */}
+        {/* Logo */}
         <Link href="/" className="flex-shrink-0">
-          {/* Logo bumped per client feedback (Apr 16): "seems strangely small right now". */}
           <SiteImage
             imageId="site.logo"
             defaultSrc={HOME_CONTENT.hero.logo}
@@ -190,20 +197,24 @@ export function Header() {
                 <ShoppingBag className="w-4 h-4" />
                 Get a Quote
               </Link>
-              <Link
-                href="/sign-in"
-                className="block py-2 text-sm font-bold uppercase tracking-wider text-[#373a36] text-center"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Login / Register
-              </Link>
-              <Link
-                href="/admin"
-                className="block py-2 text-sm font-bold uppercase tracking-wider text-[#373a36] text-center"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Admin
-              </Link>
+              {!isAuthenticated && (
+                <Link
+                  href="/sign-in"
+                  className="block py-2 text-sm font-bold uppercase tracking-wider text-[#373a36] text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Login / Register
+                </Link>
+              )}
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className="block py-2 text-sm font-bold uppercase tracking-wider text-[#373a36] text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Admin
+                </Link>
+              )}
             </div>
           </div>
         </div>

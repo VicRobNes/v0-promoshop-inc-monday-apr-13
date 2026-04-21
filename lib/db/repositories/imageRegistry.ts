@@ -1,3 +1,4 @@
+import { BulkOperationType, type OperationInput } from "@azure/cosmos"
 import { containers } from "../cosmos"
 import { shouldUseFallback, warnFallbackOnce } from "../fallback"
 
@@ -64,11 +65,9 @@ export async function setOverride(slotId: string, url: string): Promise<void> {
   }
   const container = await containers.imageRegistry()
   if (!url) {
-    // Empty URL = delete the override.
     try {
       await container.item(slotId, slotId).delete()
     } catch (err) {
-      // 404 is fine — nothing to delete.
       const statusCode = (err as { code?: number }).code
       if (statusCode !== 404) throw err
     }
@@ -94,41 +93,91 @@ export interface BulkApplyResult {
   errors: { slotId: string; reason: string }[]
 }
 
+const BULK_CHUNK = 100 // Cosmos hard limit per bulk request
+
+function chunk<T>(arr: T[], size: number): T[][] {
+  const out: T[][] = []
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size))
+  return out
+}
+
 /**
- * Apply a batch of overrides in parallel. Replaces N sequential PUT/DELETE
- * round-trips from the admin UI with a single request that fans out
- * Cosmos writes concurrently.
+ * Apply a batch of overrides using `executeBulkOperations` — a single
+ * Cosmos round-trip that fans out all upserts and deletes atomically within
+ * each 100-operation chunk. This replaces N sequential PUTs with a tight
+ * bulk call, eliminating partial-apply inconsistency on large admin imports.
  */
 export async function bulkApply(args: BulkApplyArgs): Promise<BulkApplyResult> {
   if (shouldUseFallback()) {
     throw new Error("Cannot bulkApply: Cosmos is not configured.")
   }
-  const upserts = Object.entries(args.upserts ?? {}).filter(
+
+  const upsertEntries = Object.entries(args.upserts ?? {}).filter(
     ([, v]) => typeof v === "string" && v.length > 0,
   )
-  const deletes = (args.deletes ?? []).filter((s) => typeof s === "string" && s.length > 0)
-
-  const ops = [
-    ...upserts.map(([slotId, url]) => ({ kind: "upsert" as const, slotId, url })),
-    ...deletes.map((slotId) => ({ kind: "delete" as const, slotId, url: "" })),
-  ]
-
-  const results = await Promise.allSettled(
-    ops.map((op) => setOverride(op.slotId, op.url)),
+  const deleteIds = (args.deletes ?? []).filter(
+    (s) => typeof s === "string" && s.length > 0,
   )
 
+  // Build a parallel tracking array so we know which slotId maps to which op.
+  const opMeta: Array<{ kind: "upsert" | "delete"; slotId: string }> = [
+    ...upsertEntries.map(([slotId]) => ({ kind: "upsert" as const, slotId })),
+    ...deleteIds.map((slotId) => ({ kind: "delete" as const, slotId })),
+  ]
+
+  const operations: OperationInput[] = [
+    ...upsertEntries.map(([slotId, url]): OperationInput => ({
+      operationType: BulkOperationType.Upsert,
+      partitionKey: slotId,
+      resourceBody: {
+        id: slotId,
+        slotId,
+        url,
+        updatedAt: new Date().toISOString(),
+      },
+    })),
+    ...deleteIds.map((slotId): OperationInput => ({
+      operationType: BulkOperationType.Delete,
+      partitionKey: slotId,
+      id: slotId,
+    })),
+  ]
+
+  if (operations.length === 0) {
+    return { upserted: 0, deleted: 0, errors: [] }
+  }
+
+  const container = await containers.imageRegistry()
   const out: BulkApplyResult = { upserted: 0, deleted: 0, errors: [] }
-  results.forEach((r, i) => {
-    const op = ops[i]
-    if (r.status === "fulfilled") {
-      if (op.kind === "upsert") out.upserted += 1
-      else out.deleted += 1
-    } else {
-      out.errors.push({
-        slotId: op.slotId,
-        reason: r.reason instanceof Error ? r.reason.message : String(r.reason),
+
+  // Chunk into ≤100-op batches and run concurrently.
+  const chunks = chunk(operations, BULK_CHUNK)
+  const metaChunks = chunk(opMeta, BULK_CHUNK)
+
+  await Promise.all(
+    chunks.map(async (ops, ci) => {
+      const results = await container.items.executeBulkOperations(ops)
+      results.forEach((r, i) => {
+        const meta = metaChunks[ci][i]
+        const statusCode = (r as { statusCode?: number }).statusCode ?? 0
+        const succeeded = statusCode >= 200 && statusCode < 300
+        if (succeeded) {
+          if (meta.kind === "upsert") out.upserted += 1
+          else out.deleted += 1
+        } else {
+          // 404 on delete is acceptable — treat as success.
+          if (meta.kind === "delete" && statusCode === 404) {
+            out.deleted += 1
+          } else {
+            out.errors.push({
+              slotId: meta.slotId,
+              reason: `HTTP ${statusCode}`,
+            })
+          }
+        }
       })
-    }
-  })
+    }),
+  )
+
   return out
 }

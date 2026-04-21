@@ -4,9 +4,6 @@
 // nothing to gate here. The previous `eslint: { ignoreDuringBuilds: true }`
 // block fired a deprecation warning on every dev start.
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -20,10 +17,6 @@ const nextConfig = {
         hostname: 'hebbkx1anhila5yf.public.blob.vercel-storage.com',
         pathname: '/**',
       },
-      // Previously whitelisted raw.githubusercontent.com/VicRobNes/mainmemory
-      // for logo / slideshow / storefront photos. Those assets now live in
-      // this repo's `public/images/mainmemory/` folder, so the remote
-      // allowance is dead config and has been removed.
       {
         // GitHub user-attachment images (brand logos, team photos uploaded
         // via issue/PR comments or the CMS upload flow).
