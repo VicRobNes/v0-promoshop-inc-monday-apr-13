@@ -82,3 +82,53 @@ export async function setOverride(slotId: string, url: string): Promise<void> {
   }
   await container.items.upsert<ImageOverrideItem>(item)
 }
+
+export interface BulkApplyArgs {
+  upserts?: ImageOverrides
+  deletes?: string[]
+}
+
+export interface BulkApplyResult {
+  upserted: number
+  deleted: number
+  errors: { slotId: string; reason: string }[]
+}
+
+/**
+ * Apply a batch of overrides in parallel. Replaces N sequential PUT/DELETE
+ * round-trips from the admin UI with a single request that fans out
+ * Cosmos writes concurrently.
+ */
+export async function bulkApply(args: BulkApplyArgs): Promise<BulkApplyResult> {
+  if (shouldUseFallback()) {
+    throw new Error("Cannot bulkApply: Cosmos is not configured.")
+  }
+  const upserts = Object.entries(args.upserts ?? {}).filter(
+    ([, v]) => typeof v === "string" && v.length > 0,
+  )
+  const deletes = (args.deletes ?? []).filter((s) => typeof s === "string" && s.length > 0)
+
+  const ops = [
+    ...upserts.map(([slotId, url]) => ({ kind: "upsert" as const, slotId, url })),
+    ...deletes.map((slotId) => ({ kind: "delete" as const, slotId, url: "" })),
+  ]
+
+  const results = await Promise.allSettled(
+    ops.map((op) => setOverride(op.slotId, op.url)),
+  )
+
+  const out: BulkApplyResult = { upserted: 0, deleted: 0, errors: [] }
+  results.forEach((r, i) => {
+    const op = ops[i]
+    if (r.status === "fulfilled") {
+      if (op.kind === "upsert") out.upserted += 1
+      else out.deleted += 1
+    } else {
+      out.errors.push({
+        slotId: op.slotId,
+        reason: r.reason instanceof Error ? r.reason.message : String(r.reason),
+      })
+    }
+  })
+  return out
+}

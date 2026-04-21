@@ -112,6 +112,27 @@ async function putOverrideToApi(id: string, value: string): Promise<boolean> {
   }
 }
 
+interface BulkPayload {
+  upserts?: Record<string, string>
+  deletes?: string[]
+  replace?: boolean
+}
+
+async function postBulkToApi(payload: BulkPayload): Promise<boolean> {
+  if (typeof window === "undefined") return false
+  try {
+    const res = await fetch(IMAGE_OVERRIDES_API, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+    return res.ok
+  } catch {
+    return false
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Public API — signatures preserved from the pre-Phase-1 implementation
 // ---------------------------------------------------------------------------
@@ -152,24 +173,19 @@ export function replaceAllOverrides(next: ImageOverrides): void {
   }
   sessionCache = cleaned
   writeToStorage(cleaned)
-  // Mirror every override to the API. Not atomic — the API route treats each
-  // slot as an independent upsert.
+  // One round-trip: the server also deletes any existing overrides that
+  // aren't in `cleaned` so Cosmos ends up matching the imported config.
   if (typeof window !== "undefined") {
-    for (const [k, v] of Object.entries(cleaned)) {
-      void putOverrideToApi(k, v)
-    }
+    void postBulkToApi({ upserts: cleaned, replace: true })
   }
 }
 
 export function resetAllOverrides(): void {
-  // Snapshot the current cache so we can delete every slot server-side.
   const current = ensureCache()
   const keys = Object.keys(current)
   sessionCache = {}
   writeToStorage({})
-  if (typeof window !== "undefined") {
-    for (const k of keys) {
-      void putOverrideToApi(k, "")
-    }
+  if (typeof window !== "undefined" && keys.length > 0) {
+    void postBulkToApi({ deletes: keys })
   }
 }

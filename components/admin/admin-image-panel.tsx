@@ -44,7 +44,69 @@ interface UploadSasResponse {
   expiresAt: number
 }
 
-async function uploadViaBlob(slotId: string, file: File): Promise<string> {
+interface UploadProgress {
+  /** 0–100 */
+  percent: number
+  bytesSent: number
+  totalBytes: number
+  /** "mint" = waiting on SAS, "put" = uploading to Azure, "done" / "error" */
+  phase: "mint" | "put" | "done" | "error"
+}
+
+interface UploadHandlers {
+  onProgress?: (p: UploadProgress) => void
+  /** Abort from outside (e.g. component unmount). */
+  signal?: AbortSignal
+}
+
+function putWithProgress(
+  url: string,
+  file: File,
+  handlers: UploadHandlers,
+): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open("PUT", url, true)
+    xhr.setRequestHeader("x-ms-blob-type", "BlockBlob")
+    xhr.setRequestHeader(
+      "content-type",
+      file.type || "application/octet-stream",
+    )
+
+    xhr.upload.onprogress = (ev) => {
+      if (!ev.lengthComputable) return
+      handlers.onProgress?.({
+        percent: Math.min(100, Math.round((ev.loaded / ev.total) * 100)),
+        bytesSent: ev.loaded,
+        totalBytes: ev.total,
+        phase: "put",
+      })
+    }
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) resolve()
+      else reject(new Error(`Blob PUT failed: ${xhr.status} ${xhr.statusText || ""}`.trim()))
+    }
+    xhr.onerror = () => reject(new Error("Network error uploading to Blob Storage."))
+    xhr.onabort = () => reject(new DOMException("Upload aborted", "AbortError"))
+
+    if (handlers.signal) {
+      if (handlers.signal.aborted) {
+        xhr.abort()
+        return
+      }
+      handlers.signal.addEventListener("abort", () => xhr.abort(), { once: true })
+    }
+
+    xhr.send(file)
+  })
+}
+
+async function uploadViaBlob(
+  slotId: string,
+  file: File,
+  handlers: UploadHandlers = {},
+): Promise<string> {
+  handlers.onProgress?.({ percent: 0, bytesSent: 0, totalBytes: file.size, phase: "mint" })
   const sasRes = await fetch(UPLOAD_ENDPOINT, {
     method: "POST",
     credentials: "include",
@@ -54,6 +116,7 @@ async function uploadViaBlob(slotId: string, file: File): Promise<string> {
       fileName: file.name,
       contentType: file.type || "application/octet-stream",
     }),
+    signal: handlers.signal,
   })
   if (sasRes.status === 503) {
     throw new BlobNotConfiguredError()
@@ -64,17 +127,21 @@ async function uploadViaBlob(slotId: string, file: File): Promise<string> {
   }
   const sas = (await sasRes.json()) as UploadSasResponse
 
-  const putRes = await fetch(sas.uploadUrl, {
-    method: "PUT",
-    headers: {
-      "x-ms-blob-type": "BlockBlob",
-      "content-type": file.type || "application/octet-stream",
-    },
-    body: file,
-  })
-  if (!putRes.ok) {
-    throw new Error(`Blob PUT failed: ${putRes.status} ${putRes.statusText}`)
+  // Single retry on transient PUT failures (network blip, 5xx). SAS is still
+  // valid for several minutes so the same URL can be reused.
+  try {
+    await putWithProgress(sas.uploadUrl, file, handlers)
+  } catch (err) {
+    if (err instanceof DOMException && err.name === "AbortError") throw err
+    await new Promise((r) => setTimeout(r, 600))
+    await putWithProgress(sas.uploadUrl, file, handlers)
   }
+  handlers.onProgress?.({
+    percent: 100,
+    bytesSent: file.size,
+    totalBytes: file.size,
+    phase: "done",
+  })
   return sas.readUrl
 }
 
@@ -83,6 +150,12 @@ class BlobNotConfiguredError extends Error {
     super("Blob storage not yet configured; falling back to local overrides.")
     this.name = "BlobNotConfiguredError"
   }
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
 function groupSlots(slots: ImageSlot[]): Record<string, ImageSlot[]> {
@@ -313,8 +386,13 @@ interface ImageRowProps {
 function ImageRow({ slot, override }: ImageRowProps) {
   const [draftUrl, setDraftUrl] = useState<string>(override ?? "")
   const [error, setError] = useState<string | null>(null)
-  const [uploadBusy, setUploadBusy] = useState(false)
+  const [upload, setUpload] = useState<{
+    fileName: string
+    fileSize: number
+    progress: UploadProgress
+  } | null>(null)
   const fileRef = useRef<HTMLInputElement | null>(null)
+  const abortRef = useRef<AbortController | null>(null)
 
   // Keep the draft URL input in sync when the override changes from elsewhere
   // (import, reset-all, or another browser tab).
@@ -322,6 +400,13 @@ function ImageRow({ slot, override }: ImageRowProps) {
     setDraftUrl(override ?? "")
   }, [override])
 
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort()
+    }
+  }, [])
+
+  const uploadBusy = upload !== null && upload.progress.phase !== "done" && upload.progress.phase !== "error"
   const currentSrc = override || slot.defaultSrc
   const isOverridden = Boolean(override)
 
@@ -343,7 +428,14 @@ function ImageRow({ slot, override }: ImageRowProps) {
 
   const handleFile = async (file: File) => {
     setError(null)
-    setUploadBusy(true)
+    abortRef.current?.abort()
+    const ctrl = new AbortController()
+    abortRef.current = ctrl
+    setUpload({
+      fileName: file.name,
+      fileSize: file.size,
+      progress: { percent: 0, bytesSent: 0, totalBytes: file.size, phase: "mint" },
+    })
 
     // Try blob upload first; on 503 (not configured) fall back to base64.
     try {
@@ -352,14 +444,28 @@ function ImageRow({ slot, override }: ImageRowProps) {
           `That file is ${(file.size / 1024 / 1024).toFixed(1)} MB. Please upload an image under 10 MB.`,
         )
       }
-      const readUrl = await uploadViaBlob(slot.id, file)
+      const readUrl = await uploadViaBlob(slot.id, file, {
+        signal: ctrl.signal,
+        onProgress: (p) =>
+          setUpload((cur) =>
+            cur ? { ...cur, progress: p } : cur,
+          ),
+      })
       setOverride(slot.id, readUrl)
       setDraftUrl(readUrl)
-      setUploadBusy(false)
+      setUpload(null)
       return
     } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") {
+        setUpload(null)
+        return
+      }
       if (!(err instanceof BlobNotConfiguredError)) {
-        setUploadBusy(false)
+        setUpload((cur) =>
+          cur
+            ? { ...cur, progress: { ...cur.progress, phase: "error" } }
+            : cur,
+        )
         setError(
           err instanceof Error ? err.message : "Couldn't upload to blob storage.",
         )
@@ -370,7 +476,7 @@ function ImageRow({ slot, override }: ImageRowProps) {
 
     // Fallback: base64 data URL in override (original behaviour pre-Phase 3).
     if (file.size > MAX_UPLOAD_BYTES_FALLBACK) {
-      setUploadBusy(false)
+      setUpload(null)
       setError(
         `Blob storage isn't configured yet and this file is ${(file.size / 1024 / 1024).toFixed(1)} MB — please use an image under 2.5 MB or paste a URL until Phase 0 provisioning completes.`,
       )
@@ -378,11 +484,11 @@ function ImageRow({ slot, override }: ImageRowProps) {
     }
     const reader = new FileReader()
     reader.onerror = () => {
-      setUploadBusy(false)
+      setUpload(null)
       setError("Couldn't read that file.")
     }
     reader.onload = () => {
-      setUploadBusy(false)
+      setUpload(null)
       const dataUrl = String(reader.result)
       try {
         setOverride(slot.id, dataUrl)
@@ -402,6 +508,11 @@ function ImageRow({ slot, override }: ImageRowProps) {
     clearOverride(slot.id)
     setDraftUrl("")
     setError(null)
+  }
+
+  const handleCancelUpload = () => {
+    abortRef.current?.abort()
+    setUpload(null)
   }
 
   return (
@@ -486,7 +597,7 @@ function ImageRow({ slot, override }: ImageRowProps) {
           <button
             type="button"
             onClick={handleReset}
-            disabled={!isOverridden}
+            disabled={!isOverridden || uploadBusy}
             title="Reset to default"
             className="inline-flex items-center justify-center gap-1.5 bg-white border border-[#d9d9d9] text-[#555] px-3 py-2 rounded-md text-xs font-bold uppercase tracking-wider hover:border-[#ef473f] hover:text-[#ef473f] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
@@ -494,6 +605,52 @@ function ImageRow({ slot, override }: ImageRowProps) {
             Reset
           </button>
         </div>
+
+        {upload && (
+          <div className="mt-3" aria-live="polite">
+            <div className="flex items-center gap-2 text-[11px] font-visby text-[#555] mb-1">
+              <span className="truncate font-mono text-[#1a1a1a]" title={upload.fileName}>
+                {upload.fileName}
+              </span>
+              <span className="text-[#999] flex-shrink-0">
+                {formatBytes(upload.progress.bytesSent)} / {formatBytes(upload.fileSize)}
+              </span>
+              <span className="ml-auto flex-shrink-0 font-bold text-[#1a1a1a]">
+                {upload.progress.phase === "mint"
+                  ? "Preparing…"
+                  : upload.progress.phase === "error"
+                    ? "Failed"
+                    : `${upload.progress.percent}%`}
+              </span>
+              {uploadBusy && (
+                <button
+                  type="button"
+                  onClick={handleCancelUpload}
+                  className="text-[10px] font-bold uppercase tracking-wider text-[#ef473f] hover:underline"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
+            <div
+              className="h-1.5 w-full rounded-full bg-[#eaeaea] overflow-hidden"
+              role="progressbar"
+              aria-valuenow={upload.progress.percent}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={`Uploading ${upload.fileName}`}
+            >
+              <div
+                className={`h-full transition-all duration-150 ${
+                  upload.progress.phase === "error" ? "bg-[#c0392b]" : "bg-[#6abf4b]"
+                }`}
+                style={{
+                  width: `${upload.progress.phase === "mint" ? 5 : upload.progress.percent}%`,
+                }}
+              />
+            </div>
+          </div>
+        )}
 
         {error && (
           <p className="mt-2 text-xs text-[#c0392b] font-visby">{error}</p>
