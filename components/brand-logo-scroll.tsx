@@ -7,10 +7,11 @@ import { useImageSrc } from "@/hooks/use-image-src"
 
 // Wikipedia/CDN logo URLs for brands with confirmed public images.
 // These are used as fallbacks when no custom logo has been uploaded.
+// Brands without URLs here will show a styled text fallback.
 const BRAND_LOGO_OVERRIDES: Record<string, string> = {
-  patagonia: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Patagonia_logo.svg/400px-Patagonia_logo.svg.png",
   victorinox: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Victorinox-logo.svg/400px-Victorinox-logo.svg.png",
   lululemon: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Lululemon_Athletica_logo.svg/400px-Lululemon_Athletica_logo.svg.png",
+  patagonia: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Patagonia_logo.svg/400px-Patagonia_logo.svg.png",
   "helly-hansen": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Helly_Hansen_logo.svg/400px-Helly_Hansen_logo.svg.png",
   yeti: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/YETI_Logo.svg/400px-YETI_Logo.svg.png",
 }
@@ -46,7 +47,7 @@ export function BrandLogoScroll() {
               unoptimized
             />
           ) : (
-            <span className="font-bebas text-3xl tracking-[0.12em] uppercase text-[#1a1f2a] whitespace-nowrap">
+            <span className="font-sans text-xl font-bold tracking-widest uppercase text-[#1a1f2a] whitespace-nowrap">
               {brand.name}
             </span>
           )}

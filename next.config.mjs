@@ -29,6 +29,12 @@ const nextConfig = {
         hostname: 'user-images.githubusercontent.com',
         pathname: '/**',
       },
+      {
+        // Wikipedia/Wikimedia Commons for brand logos
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+        pathname: '/**',
+      },
     ],
   },
 }
