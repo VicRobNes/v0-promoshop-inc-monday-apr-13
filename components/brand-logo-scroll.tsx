@@ -4,21 +4,50 @@ import { useState } from "react"
 import { BRANDS } from "@/lib/brands"
 
 // Wikipedia Commons Special:Redirect URLs that automatically resolve to the correct files
-// Brands without Wikipedia images use text fallback
+// Only 4 brands have working Wikipedia images: Patagonia, Victorinox, Helly Hansen, Titleist
 const BRAND_LOGO_URLS: Record<string, string> = {
   patagonia: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Patagonia_(Unternehmen)_logo.svg&width=320",
   victorinox: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Victorinox_Logo.svg&width=320",
-  lululemon: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Lululemon_Athletica_logo.svg&width=240",
   "helly-hansen": "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Helly_Hansen_logo_12.png&width=320",
-  stanley: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Stanley_(tools)_logo.svg&width=320",
-  titleist: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Titleist_Logo.svg&width=320",
-  // rhone, travismathew, peter-millar, stio, johnnie-o use text fallback (no Wikipedia file)
+  titleist: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Titleist_logo.svg&width=320",
+  // stanley, lululemon, rhone, travismathew, peter-millar, stio, johnnie-o use text/SVG fallback
+}
+
+// Custom SVG wordmark for lululemon (lowercase italic per brand guidelines)
+function LululemonLogo() {
+  return (
+    <svg viewBox="0 0 120 24" className="h-6 w-auto opacity-60 hover:opacity-100 transition-opacity">
+      <text
+        x="0"
+        y="18"
+        fontFamily="Georgia, serif"
+        fontSize="18"
+        fontStyle="italic"
+        fontWeight="400"
+        fill="#1a1a1a"
+        letterSpacing="1"
+      >
+        lululemon
+      </text>
+    </svg>
+  )
 }
 
 // Individual tile component with error state handling
 function BrandTile({ brand, tileKey }: { brand: { slug: string; name: string }; tileKey: string }) {
   const [imgError, setImgError] = useState(false)
   const logoUrl = BRAND_LOGO_URLS[brand.slug]
+
+  // Special case: lululemon uses custom SVG wordmark
+  if (brand.slug === "lululemon") {
+    return (
+      <div key={tileKey} className="flex-shrink-0 mx-10 flex items-center justify-center">
+        <div className="h-16 flex items-center justify-center px-3">
+          <LululemonLogo />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div
