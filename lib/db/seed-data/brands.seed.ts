@@ -5,10 +5,9 @@ export interface Brand {
   description: string
   categories: string[]
   featured?: boolean
-  /** GitHub user-attachment URL for the brand logo image. Empty string = text fallback. */
-  logoUrl?: string | null
-  website?: string | null
-}
+    logoUrl: string | null
+    website: string | null
+  
 
 export const BRANDS: Brand[] = [
   {
