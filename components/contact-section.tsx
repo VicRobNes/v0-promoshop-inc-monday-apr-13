@@ -3,21 +3,52 @@
 import { Mail, Phone, MapPin } from "lucide-react"
 import { useState } from "react"
 import { useLocale } from "@/lib/locale-context"
+import { submitQuoteRequest } from "@/app/actions/quotes"
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
+    phone: "",
     company: "",
     message: ""
   })
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState("")
   const { config } = useLocale()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
+    setError("")
+    setSubmitting(true)
+
+    const result = await submitQuoteRequest({
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      email: formData.email,
+      phone: formData.phone || undefined,
+      company: formData.company || undefined,
+      message: formData.message,
+    })
+
+    setSubmitting(false)
+
+    if (result.success) {
+      setSubmitted(true)
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        company: "",
+        message: ""
+      })
+      setTimeout(() => setSubmitted(false), 5000)
+    } else {
+      setError(result.error || "An error occurred. Please try again.")
+    }
   }
 
   return (
@@ -98,21 +129,42 @@ export function ContactSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
+                {error && (
+                  <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
+                    {error}
+                  </div>
+                )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="name" className="block text-xs font-bold tracking-wider text-[#888] uppercase mb-2">
-                      Name *
+                    <label htmlFor="firstName" className="block text-xs font-bold tracking-wider text-[#888] uppercase mb-2">
+                      First Name *
                     </label>
                     <input
                       type="text"
-                      id="name"
+                      id="firstName"
                       required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      value={formData.firstName}
+                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                       className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors placeholder:text-[#555]"
-                      placeholder="Your name"
+                      placeholder="First name"
                     />
                   </div>
+                  <div>
+                    <label htmlFor="lastName" className="block text-xs font-bold tracking-wider text-[#888] uppercase mb-2">
+                      Last Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      required
+                      value={formData.lastName}
+                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                      className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors placeholder:text-[#555]"
+                      placeholder="Last name"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="contact-email" className="block text-xs font-bold tracking-wider text-[#888] uppercase mb-2">
                       Email *
@@ -125,6 +177,19 @@ export function ContactSection() {
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors placeholder:text-[#555]"
                       placeholder="you@company.com"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="phone" className="block text-xs font-bold tracking-wider text-[#888] uppercase mb-2">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors placeholder:text-[#555]"
+                      placeholder="(555) 123-4567"
                     />
                   </div>
                 </div>
@@ -157,9 +222,10 @@ export function ContactSection() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-[#ef473f] text-white py-3.5 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity"
+                  disabled={submitting}
+                  className="w-full bg-[#ef473f] text-white py-3.5 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
-                  Send Message
+                  {submitting ? "Sending..." : "Send Message"}
                 </button>
               </form>
             )}
