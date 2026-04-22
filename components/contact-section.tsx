@@ -3,6 +3,7 @@
 import { Mail, Phone, MapPin } from "lucide-react"
 import { useState } from "react"
 import { useLocale } from "@/lib/locale-context"
+import { submitContactForm } from "@/app/actions/contact"
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -12,12 +13,21 @@ export function ContactSection() {
     message: ""
   })
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { config } = useLocale()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
+    setIsSubmitting(true)
+    
+    const result = await submitContactForm(formData)
+    
+    setIsSubmitting(false)
+    if (result.success) {
+      setSubmitted(true)
+      setFormData({ name: "", email: "", company: "", message: "" })
+      setTimeout(() => setSubmitted(false), 5000)
+    }
   }
 
   return (
@@ -157,9 +167,10 @@ export function ContactSection() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-[#ea4a3f] text-white py-3.5 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#ea4a3f] text-white py-3.5 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Send Message
+                  {isSubmitting ? "Sending..." : "Send Message"}
                 </button>
               </form>
             )}
