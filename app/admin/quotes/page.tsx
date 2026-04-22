@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, Suspense } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import {
@@ -38,7 +38,7 @@ const STATUS_OPTIONS = [
   { value: "archived", label: "Archived", icon: Archive, color: "gray" },
 ]
 
-export default function QuotesAdminPage() {
+function AdminQuotesContent() {
   const [quotes, setQuotes] = useState<QuoteRequest[]>([])
   const [loading, setLoading] = useState(true)
   const [expandedId, setExpandedId] = useState<string | null>(null)
@@ -382,5 +382,14 @@ function QuoteCard({
         </div>
       )}
     </div>
+  )
+}
+
+
+export default function AdminQuotesPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00c896]"></div></div>}>
+      <AdminQuotesContent />
+    </Suspense>
   )
 }
