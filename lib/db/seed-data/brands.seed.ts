@@ -7,7 +7,7 @@ export interface Brand {
   featured?: boolean
       logoUrl?: string | null
       website?: string | null
-  
+  }
 
 export const BRANDS: Brand[] = [
   {
