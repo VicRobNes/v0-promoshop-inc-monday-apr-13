@@ -17,7 +17,7 @@ export const BRANDS: Brand[] = [
     description: "Outdoor apparel and gear built for adventure. Known for quality, durability, and environmental responsibility.",
     categories: ["Jackets", "Tops", "Vests", "Bags"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-FJUyll7hNLIIXtcuWfxWqreUWmDIxe.png",
+    logoUrl: "/images/mainmemory/1.png",
   },
   {
     id: "yeti",
@@ -35,7 +35,7 @@ export const BRANDS: Brand[] = [
     description: "Legendary drinkware with over 100 years of heritage. Known for rugged durability and timeless design.",
     categories: ["Drinkware"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/6-mVlSoqIeSh03KVtk96BTvogpR6tnpb.png",
+    logoUrl: "/images/mainmemory/6.png",
   },
   {
     id: "jbl",
@@ -53,7 +53,7 @@ export const BRANDS: Brand[] = [
     description: "Performance apparel designed for the modern athlete. Premium fabrics with innovative technology.",
     categories: ["Tops", "Activewear"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/11-pIRpUVJBepuqXLWQE1qlEkoqtTIFMJ.png",
+    logoUrl: "/images/mainmemory/11.png",
   },
   {
     id: "vssl",
@@ -125,7 +125,7 @@ export const BRANDS: Brand[] = [
     description: "Luxury golf and lifestyle apparel. Refined performance wear with timeless elegance and exceptional quality.",
     categories: ["Tops", "Polos", "Golf"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2-rfqwDhDQ9fpMHc88VDa1293VIrY21d.png",
+    logoUrl: "/images/mainmemory/2.png",
   },
   {
     id: "johnnie-o",
@@ -134,7 +134,7 @@ export const BRANDS: Brand[] = [
     description: "West Coast lifestyle brand blending California cool with East Coast prep. Comfortable, versatile performance wear.",
     categories: ["Tops", "Casual", "Golf"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/5-J6zWc9LBNdgjF0qBd3T7dYi8xVn42f.png",
+    logoUrl: "/images/mainmemory/5.png",
   },
   {
     id: "helly-hansen",
@@ -143,7 +143,7 @@ export const BRANDS: Brand[] = [
     description: "Norwegian heritage brand for sailing and outdoor adventures. Professional-grade protection with clean marine design.",
     categories: ["Jackets", "Outerwear", "Marine"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3-bYx3sdR5cnTkJwfFffjg9vHQBoUUZI.png",
+    logoUrl: "/images/mainmemory/3.png",
   },
   {
     id: "titleist",
@@ -152,7 +152,7 @@ export const BRANDS: Brand[] = [
     description: "The #1 ball in golf. Premium golf equipment trusted by professionals worldwide.",
     categories: ["Golf", "Accessories"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/7-CTKbj7ACVF6xhEDVxm7uhJKMgwRlUs.png",
+    logoUrl: "/images/mainmemory/7.png",
   },
   {
     id: "lululemon",
@@ -161,7 +161,7 @@ export const BRANDS: Brand[] = [
     description: "Premium athletic and lifestyle apparel. Technical fabrics engineered for performance and comfort.",
     categories: ["Tops", "Activewear", "Accessories"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/8-R8doHkrqKuR2q39C1zumotyOqsgqzE.png",
+    logoUrl: "/images/mainmemory/8.png",
   },
   {
     id: "travismathew",
@@ -170,7 +170,7 @@ export const BRANDS: Brand[] = [
     description: "California-inspired performance lifestyle brand. Golf and casual wear built for comfort and style.",
     categories: ["Tops", "Golf", "Casual"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9-DulWx8qRRVMImHYNgUtuI1KQU1IjnS.png",
+    logoUrl: "/images/mainmemory/9.png",
   },
   {
     id: "victorinox",
@@ -179,7 +179,7 @@ export const BRANDS: Brand[] = [
     description: "Swiss precision and craftsmanship. Iconic knives, tools, and accessories built to last a lifetime.",
     categories: ["Accessories", "Outdoor"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/10-pYFCxqyHSDkHWPuBarYPRUmp4sin4D.png",
+    logoUrl: "/images/mainmemory/10.png",
   },
   {
     id: "stio",
@@ -188,7 +188,7 @@ export const BRANDS: Brand[] = [
     description: "Mountain-inspired technical apparel. Performance outdoor gear rooted in Jackson Hole.",
     categories: ["Jackets", "Tops", "Outdoor"],
     featured: true,
-    logoUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4-7iWznkBORJlNVtXXGGT8gf0cqm0rAX.png",
+    logoUrl: "/images/mainmemory/4.png",
   },
 ]
 
