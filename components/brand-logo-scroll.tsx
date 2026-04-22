@@ -3,20 +3,16 @@
 import { useState } from "react"
 import { BRANDS } from "@/lib/brands"
 
-// Publicly accessible brand logo image URLs from Wikipedia/CDN
+// Wikipedia Commons Special:Redirect URLs that automatically resolve to the correct files
+// Brands without Wikipedia images use text fallback
 const BRAND_LOGO_URLS: Record<string, string> = {
-  rhone: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Rhone_Apparel_logo.svg/320px-Rhone_Apparel_logo.svg.png",
-  travismathew: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/TravisMathew_wordmark.svg/320px-TravisMathew_wordmark.svg.png",
-  victorinox: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Victorinox_Logo.svg/320px-Victorinox_Logo.svg.png",
-  stanley: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Stanley_PMI_logo.svg/320px-Stanley_PMI_logo.svg.png",
-  titleist: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Titleist_logo.svg/320px-Titleist_logo.svg.png",
-  lululemon: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Lululemon_Athletica_logo.svg/320px-Lululemon_Athletica_logo.svg.png",
-  "johnnie-o": "https://cdn.johnnio.com/images/logo.png",
-  stio: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Stio_logo.svg/320px-Stio_logo.svg.png",
-  patagonia: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Patagonia_Logo.svg/320px-Patagonia_Logo.svg.png",
-  "helly-hansen": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Helly_Hansen_logo.svg/320px-Helly_Hansen_logo.svg.png",
-  "peter-millar": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Peter_Millar_logo.svg/320px-Peter_Millar_logo.svg.png",
-  yeti: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/YETI_Logo.svg/320px-YETI_Logo.svg.png",
+  patagonia: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Patagonia_(Unternehmen)_logo.svg&width=320",
+  victorinox: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Victorinox_Logo.svg&width=320",
+  lululemon: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Lululemon_Athletica_logo.svg&width=240",
+  "helly-hansen": "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Helly_Hansen_logo_12.png&width=320",
+  stanley: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Stanley_(tools)_logo.svg&width=320",
+  titleist: "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Titleist_Logo.svg&width=320",
+  // rhone, travismathew, peter-millar, stio, johnnie-o use text fallback (no Wikipedia file)
 }
 
 // Individual tile component with error state handling

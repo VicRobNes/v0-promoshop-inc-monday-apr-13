@@ -35,6 +35,12 @@ const nextConfig = {
         hostname: 'upload.wikimedia.org',
         pathname: '/**',
       },
+      {
+        // Wikimedia Commons Special:Redirect URLs
+        protocol: 'https',
+        hostname: 'commons.wikimedia.org',
+        pathname: '/**',
+      },
     ],
   },
 }
