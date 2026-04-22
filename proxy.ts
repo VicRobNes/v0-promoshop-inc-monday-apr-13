@@ -1,60 +1,40 @@
-import { NextResponse, type NextRequest } from "next/server"
-import { getSessionFromRequest, hasRole } from "@/lib/auth/server"
+import { type NextRequest } from "next/server"
+import { updateSession } from "@/lib/supabase/middleware"
 
 /**
- * Phase 2 — route guard for `/admin/*` + `/api/admin/*`.
+ * Supabase Auth Middleware for PromoShop Studio
  *
- * In Next 16 the `middleware.ts` file convention was renamed to `proxy.ts`;
- * the shape of the exported function and the `config.matcher` are unchanged.
+ * This middleware handles:
+ * 1. Session refresh - Keeps Supabase auth cookies fresh on every request
+ * 2. Admin route protection - Redirects unauthenticated users to /admin/login
+ * 3. Admin role verification - Checks admin_users table for active admin status
  *
- * Strategy:
- *  1. Browser requests to `/admin/**` → redirect to `/sign-in?redirect=...`
- *     when the session is missing or isn't admin. Prevents the UI flash.
- *  2. API requests to `/api/admin/**` → JSON 401/403 so callers can react
- *     programmatically.
+ * The updateSession function in @/lib/supabase/middleware.ts handles:
+ * - Creating a Supabase server client with cookie management
+ * - Refreshing expired sessions automatically
+ * - Protecting /admin/* routes (except /admin/login which is public)
+ * - Protecting /api/admin/* routes with JSON error responses
+ * - Verifying users exist in admin_users table with is_active=true
  *
- * Validation is delegated to `getSessionFromRequest` (JWT + JWKS), which
- * honours `x-mock-admin: 1` in non-prod so dev/smoke workflows keep working.
+ * Next.js 16 renamed middleware.ts to proxy.ts (backwards compatible).
+ * We export both `middleware` and `proxy` for compatibility.
  */
-export async function proxy(req: NextRequest): Promise<NextResponse> {
-  const { pathname, search } = req.nextUrl
-  const isApi = pathname.startsWith("/api/admin")
-  const isAdmin = pathname.startsWith("/admin") || isApi
-
-  if (!isAdmin) return NextResponse.next()
-
-  const session = await getSessionFromRequest(req)
-
-  if (!session) {
-    if (isApi) {
-      return NextResponse.json(
-        { error: "Unauthorized — sign in with an admin account." },
-        { status: 401 },
-      )
-    }
-    const redirectTarget = encodeURIComponent(`${pathname}${search}`)
-    const url = req.nextUrl.clone()
-    url.pathname = "/sign-in"
-    url.search = `?redirect=${redirectTarget}`
-    return NextResponse.redirect(url)
-  }
-
-  if (!hasRole(session, "admin")) {
-    if (isApi) {
-      return NextResponse.json(
-        { error: "Forbidden — admin role required." },
-        { status: 403 },
-      )
-    }
-    const url = req.nextUrl.clone()
-    url.pathname = "/"
-    url.search = ""
-    return NextResponse.redirect(url)
-  }
-
-  return NextResponse.next()
+export async function middleware(request: NextRequest) {
+  return await updateSession(request)
 }
 
+// Next.js 16 compatibility - proxy.ts convention
+export const proxy = middleware
+
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - Static assets (svg, png, jpg, jpeg, gif, webp)
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 }

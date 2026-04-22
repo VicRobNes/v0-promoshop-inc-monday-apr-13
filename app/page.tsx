@@ -6,8 +6,38 @@ import { BrandLogoScroll } from "@/components/brand-logo-scroll"
 import { ContactSection } from "@/components/contact-section"
 import { HeroSlideshow } from "@/components/home/hero-slideshow"
 import { HOME_CONTENT } from "@/lib/cms/home"
+import { getHeroSlides, getSupabaseBrands } from "@/lib/supabase/data"
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Fetch hero slides and brands from Supabase
+  const [heroSlides, supabaseBrands] = await Promise.all([
+    getHeroSlides(),
+    getSupabaseBrands(),
+  ])
+
+  // Transform Supabase hero slides to the format expected by HeroSlideshow
+  const slides = heroSlides.length > 0
+    ? heroSlides.map((slide) => ({
+        src: slide.image_url || "",
+        alt: slide.title,
+        title: slide.title,
+        subtitle: slide.subtitle,
+        cta_text: slide.cta_text,
+        cta_url: slide.cta_url,
+        bg_color: slide.bg_color,
+      }))
+    : HOME_CONTENT.slideshow // Fallback to static content if no Supabase slides
+
+  // Transform Supabase brands for the logo scroll
+  const brands = supabaseBrands.length > 0
+    ? supabaseBrands.map((brand) => ({
+        id: brand.id,
+        slug: brand.slug,
+        name: brand.name,
+        logoUrl: brand.logo_url,
+      }))
+    : null // Will use static BRANDS as fallback in component
+
   return (
     <div className="min-h-screen bg-[#111111] text-white">
       <Header />
@@ -49,13 +79,13 @@ export default function HomePage() {
               </div>
             </div>
             {/* Slideshow Side */}
-            <HeroSlideshow slides={HOME_CONTENT.slideshow} />
+            <HeroSlideshow slides={slides} />
           </div>
         </div>
       </section>
 
       {/* Brand Logo Scroll */}
-      <BrandLogoScroll />
+      <BrandLogoScroll brands={brands} />
 
       {/* "Meet Our Team" removed from the home page per client feedback
           (Apr 16): keep it on the About page only so visitors land directly on

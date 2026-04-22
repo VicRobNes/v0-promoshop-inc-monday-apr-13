@@ -2,11 +2,20 @@
 
 import { useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import type { HomeSlide } from "@/lib/cms/home"
 import { useImageSrc } from "@/hooks/use-image-src"
 
+export interface HeroSlide {
+  src: string
+  alt: string
+  title?: string
+  subtitle?: string | null
+  cta_text?: string | null
+  cta_url?: string | null
+  bg_color?: string | null
+}
+
 interface HeroSlideshowProps {
-  slides: HomeSlide[]
+  slides: HeroSlide[]
   intervalMs?: number
 }
 
@@ -15,7 +24,7 @@ function Slide({
   active,
   slideIndex,
 }: {
-  slide: HomeSlide
+  slide: HeroSlide
   active: boolean
   slideIndex: number
 }) {
@@ -23,12 +32,15 @@ function Slide({
   // defaults stay blank to preserve the intentional "no background image"
   // hero design. The Admin panel still lists these slots so they can be
   // turned back on at any time.
-  const src = useImageSrc(`home.slideshow.${slideIndex}`, "")
+  const overrideSrc = useImageSrc(`home.slideshow.${slideIndex}`, "")
+  const src = overrideSrc || slide.src
+  
   return (
     <div
       className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
         active ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
+      style={slide.bg_color ? { backgroundColor: slide.bg_color } : undefined}
       aria-hidden={!active}
     >
       {src ? (
@@ -65,7 +77,7 @@ export function HeroSlideshow({ slides, intervalMs = 5000 }: HeroSlideshowProps)
     >
       {slides.map((slide, i) => (
         <Slide
-          key={`${i}-${slide.src}`}
+          key={`${i}-${slide.src || slide.alt}`}
           slide={slide}
           active={i === index}
           slideIndex={i + 1}

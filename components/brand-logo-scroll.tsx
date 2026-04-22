@@ -5,15 +5,32 @@ import { SiteImage } from "@/components/site-image"
 import { brandLogoId } from "@/lib/image-registry"
 import { useImageSrc } from "@/hooks/use-image-src"
 
-export function BrandLogoScroll() {
-  const brands = BRANDS
+interface BrandData {
+  id: string
+  slug: string
+  name: string
+  logoUrl: string | null
+}
+
+interface BrandLogoScrollProps {
+  brands?: BrandData[] | null
+}
+
+export function BrandLogoScroll({ brands: propBrands }: BrandLogoScrollProps) {
+  // Use Supabase brands if provided, otherwise fallback to static BRANDS
+  const brands = propBrands || BRANDS.map(b => ({
+    id: b.id,
+    slug: b.slug,
+    name: b.name,
+    logoUrl: b.logoUrl ?? null,
+  }))
 
   // Tile — no borders, no background. Logo floats directly on the sky-blue
   // (#bde7ff) banner per client feedback (Apr 16). When a brand hasn't had
   // a logo uploaded yet we fall back to a neutral wordmark sized + weighted
   // to sit harmoniously next to real logos — so a half-populated scroll
   // still reads as a cohesive row rather than a broken state.
-  const Tile = ({ brand, tileKey }: { brand: (typeof brands)[0]; tileKey: string }) => {
+  const Tile = ({ brand, tileKey }: { brand: BrandData; tileKey: string }) => {
     const id = brandLogoId(brand.slug)
     const src = useImageSrc(id, brand.logoUrl ?? "")
     return (
