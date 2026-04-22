@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { BRANDS } from "@/lib/brands"
 import { SiteImage } from "@/components/site-image"
 import { brandLogoId } from "@/lib/image-registry"
@@ -28,7 +29,17 @@ export function BrandLogoScroll() {
     const customSrc = useImageSrc(id, brand.logoUrl ?? "")
     // Prefer custom uploaded logo, then Wikipedia override, then text fallback
     const overrideSrc = BRAND_LOGO_OVERRIDES[brand.slug]
-    const src = customSrc || overrideSrc
+    const [imgError, setImgError] = useState(false)
+
+    // Use custom uploaded logo if available
+    const hasCustomLogo = !!customSrc
+
+    // Text fallback component
+    const TextFallback = () => (
+      <span className="font-sans text-xl font-bold tracking-widest uppercase text-[#1a1f2a] whitespace-nowrap">
+        {brand.name}
+      </span>
+    )
 
     return (
       <div
@@ -36,20 +47,27 @@ export function BrandLogoScroll() {
         className="flex-shrink-0 mx-10 flex items-center justify-center"
       >
         <div className="h-16 flex items-center justify-center px-3">
-          {src ? (
+          {hasCustomLogo ? (
+            // Use SiteImage for custom uploaded logos (internal URLs)
             <SiteImage
               imageId={id}
-              defaultSrc={src}
+              defaultSrc={customSrc}
               alt={brand.name}
               width={180}
               height={72}
               className="max-h-14 w-auto object-contain"
               unoptimized
             />
+          ) : overrideSrc && !imgError ? (
+            // Use regular <img> for external Wikipedia URLs to bypass Next.js optimization
+            <img
+              src={overrideSrc}
+              alt={brand.name}
+              className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all"
+              onError={() => setImgError(true)}
+            />
           ) : (
-            <span className="font-sans text-xl font-bold tracking-widest uppercase text-[#1a1f2a] whitespace-nowrap">
-              {brand.name}
-            </span>
+            <TextFallback />
           )}
         </div>
       </div>
