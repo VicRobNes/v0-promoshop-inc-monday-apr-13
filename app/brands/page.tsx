@@ -23,7 +23,7 @@ export default async function BrandsPage() {
         categories: [] as string[],
         featured: false,
       }))
-    : BRANDS
+    : BRANDS.map((b) => ({ ...b, logoUrl: b.logoUrl ?? null, website: b.website ?? null }))
 
   return (
     <div className="min-h-screen bg-white text-[#1a1a1a]">
