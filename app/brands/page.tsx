@@ -34,10 +34,10 @@ export default function BrandsPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="py-12 lg:py-16 px-6 lg:px-8 bg-[#f9f9f9]">
+      <section className="py-12 lg:py-16 px-6 lg:px-8 bg-[#ededed]">
         <div className="mx-auto max-w-7xl">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-xs font-bold tracking-wider text-[#ef473f] uppercase mb-4">
+            <p className="text-xs font-bold tracking-wider text-[#ea4a3f] uppercase mb-4">
               Our Partners
             </p>
             {/* Heading renamed per Abigail's Apr 15 list: "PREMIUM BRANDS WE
@@ -58,7 +58,7 @@ export default function BrandsPage() {
                 placeholder="Search brands..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-white border border-[#e5e5e5] text-[#1a1a1a] pl-12 pr-4 py-3.5 rounded-lg text-sm font-visby tracking-wide outline-none placeholder:text-[#999] focus:border-[#ef473f] transition-colors shadow-sm"
+                className="w-full bg-white border border-[#e5e5e5] text-[#1a1a1a] pl-12 pr-4 py-3.5 rounded-lg text-sm font-visby tracking-wide outline-none placeholder:text-[#999] focus:border-[#ea4a3f] transition-colors shadow-sm"
               />
             </div>
           </div>
@@ -76,20 +76,20 @@ export default function BrandsPage() {
                   <Link
                     key={brand.id}
                     href={`/brands/${brand.slug}`}
-                    className="group bg-white border border-[#e5e5e5] rounded-lg p-8 hover:border-[#ef473f] hover:shadow-md transition-all duration-300"
+                    className="group bg-white border border-[#e5e5e5] rounded-lg p-8 hover:border-[#ea4a3f] hover:shadow-md transition-all duration-300"
                   >
                     <div className="w-full h-20 bg-[#f5f5f5] rounded flex items-center justify-center mb-6 group-hover:bg-[#fef2f2] transition-colors overflow-hidden px-4">
                       <BrandLogo
                         brand={brand}
-                        fallbackClassName="font-montserrat font-bold text-xl tracking-wider text-[#373a36]/60 group-hover:text-[#ef473f] transition-colors uppercase"
+                        fallbackClassName="font-montserrat font-bold text-xl tracking-wider text-[#373a36]/60 group-hover:text-[#ea4a3f] transition-colors uppercase"
                       />
                     </div>
 
-                    <h3 className="font-montserrat font-bold text-lg text-[#1a1a1a] mb-2 group-hover:text-[#ef473f] transition-colors">
+                    <h3 className="font-montserrat font-bold text-lg text-[#1a1a1a] mb-2 group-hover:text-[#ea4a3f] transition-colors">
                       {brand.name}
                     </h3>
                     
-                    <p className="text-xs font-bold tracking-wider uppercase text-[#ef473f] mb-2">
+                    <p className="text-xs font-bold tracking-wider uppercase text-[#ea4a3f] mb-2">
                       {brand.categories[0]}
                     </p>
                     
@@ -97,7 +97,7 @@ export default function BrandsPage() {
                       {brand.description}
                     </p>
 
-                    <div className="flex items-center gap-2 text-[#ef473f] text-sm font-semibold uppercase tracking-wider">
+                    <div className="flex items-center gap-2 text-[#ea4a3f] text-sm font-semibold uppercase tracking-wider">
                       View Products
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -130,7 +130,7 @@ export default function BrandsPage() {
           </p>
           <Link
             href="/#contact"
-            className="inline-flex items-center gap-2 bg-[#ef473f] text-white px-10 py-4 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 bg-[#ea4a3f] text-white px-10 py-4 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity"
           >
             Contact Us
             <ArrowRight className="w-4 h-4" />

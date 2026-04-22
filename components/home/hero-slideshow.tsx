@@ -99,7 +99,7 @@ export function HeroSlideshow({ slides, intervalMs = 5000 }: HeroSlideshowProps)
                 onClick={() => go(i)}
                 aria-label={`Go to slide ${i + 1}`}
                 className={`h-2 rounded-full transition-all ${
-                  i === index ? "bg-[#ef473f] w-6" : "bg-white/70 hover:bg-white w-2"
+                  i === index ? "bg-[#ea4a3f] w-6" : "bg-white/70 hover:bg-white w-2"
                 }`}
               />
             ))}

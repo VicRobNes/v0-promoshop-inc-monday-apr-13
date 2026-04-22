@@ -30,7 +30,7 @@ export function AdminTabs() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-8 lg:px-8">
       <header className="mb-6">
-        <p className="text-xs font-bold tracking-wider uppercase text-[#ef473f]">Admin</p>
+        <p className="text-xs font-bold tracking-wider uppercase text-[#ea4a3f]">Admin</p>
         <h1 className="text-2xl lg:text-3xl font-bold text-[#111] mt-1">
           Content dashboard
         </h1>
@@ -54,7 +54,7 @@ export function AdminTabs() {
               aria-current={active ? "page" : undefined}
               className={`inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors border-b-2 ${
                 active
-                  ? "border-[#ef473f] text-[#ef473f]"
+                  ? "border-[#ea4a3f] text-[#ea4a3f]"
                   : "border-transparent text-[#666] hover:text-[#111]"
               }`}
             >

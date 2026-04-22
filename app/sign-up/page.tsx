@@ -78,7 +78,7 @@ function SignUpPageInner() {
   }
   const strength = passwordStrength()
 
-  const inputClass = "w-full bg-white border border-[#e5e5e5] text-[#1a1a1a] px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors"
+  const inputClass = "w-full bg-white border border-[#e5e5e5] text-[#1a1a1a] px-4 py-3 rounded text-sm font-visby focus:border-[#ea4a3f] focus:outline-none transition-colors"
   const labelClass = "block text-xs font-bold tracking-wider text-[#999] uppercase mb-2"
 
   return (
@@ -107,8 +107,8 @@ function SignUpPageInner() {
               "Get personalized product recommendations",
             ].map((feature, index) => (
               <div key={index} className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-[#ef473f]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="w-3 h-3 text-[#ef473f]" />
+                <div className="w-5 h-5 rounded-full bg-[#ea4a3f]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="w-3 h-3 text-[#ea4a3f]" />
                 </div>
                 <p className="text-[#666] text-sm font-visby">{feature}</p>
               </div>
@@ -134,7 +134,7 @@ function SignUpPageInner() {
           <p className="text-[#666] mb-6 font-visby">Get started with PromoShop today.</p>
 
           {error && (
-            <div className="bg-[#ef473f]/10 border border-[#ef473f]/30 text-[#ef473f] px-4 py-3 rounded mb-6 text-sm">{error}</div>
+            <div className="bg-[#ea4a3f]/10 border border-[#ea4a3f]/30 text-[#ea4a3f] px-4 py-3 rounded mb-6 text-sm">{error}</div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -159,20 +159,20 @@ function SignUpPageInner() {
 
             <div className="pt-2">
               <label className="flex items-start gap-3 cursor-pointer">
-                <input type="checkbox" checked={agreedToTerms} onChange={(e) => setAgreedToTerms(e.target.checked)} className="w-4 h-4 mt-0.5 rounded border-[#e5e5e5] bg-white text-[#ef473f] focus:ring-[#ef473f]" />
+                <input type="checkbox" checked={agreedToTerms} onChange={(e) => setAgreedToTerms(e.target.checked)} className="w-4 h-4 mt-0.5 rounded border-[#e5e5e5] bg-white text-[#ea4a3f] focus:ring-[#ea4a3f]" />
                 <span className="text-sm text-[#666] font-visby">
-                  I agree to the <Link href="#" className="text-[#ef473f] hover:underline">Terms of Service</Link> and <Link href="#" className="text-[#ef473f] hover:underline">Privacy Policy</Link>
+                  I agree to the <Link href="#" className="text-[#ea4a3f] hover:underline">Terms of Service</Link> and <Link href="#" className="text-[#ea4a3f] hover:underline">Privacy Policy</Link>
                 </span>
               </label>
             </div>
 
-            <button type="submit" disabled={isLoading} className="w-full bg-[#ef473f] text-white py-4 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2 mt-6">
+            <button type="submit" disabled={isLoading} className="w-full bg-[#ea4a3f] text-white py-4 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2 mt-6">
               {isLoading ? (<><span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />Creating Account...</>) : (<>Create Account <ArrowRight className="w-4 h-4" /></>)}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-[#666] font-visby">Already have an account? <Link href="/sign-in" className="text-[#ef473f] hover:underline font-semibold">Sign in</Link></p>
+            <p className="text-[#666] font-visby">Already have an account? <Link href="/sign-in" className="text-[#ea4a3f] hover:underline font-semibold">Sign in</Link></p>
           </div>
           <div className="mt-6 text-center">
             <Link href="/" className="text-sm text-[#999] hover:text-[#1a1a1a] transition-colors font-visby">Back to Home</Link>

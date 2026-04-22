@@ -28,7 +28,7 @@ export function TeamMemberAvatar({ member, size }: TeamMemberAvatarProps) {
   }
 
   return (
-    <span className="font-montserrat font-bold text-2xl text-[#ef473f]">
+    <span className="font-montserrat font-bold text-2xl text-[#ea4a3f]">
       {member.name
         .split(" ")
         .map((n) => n[0])

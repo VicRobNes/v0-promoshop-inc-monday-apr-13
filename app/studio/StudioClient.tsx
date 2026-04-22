@@ -85,7 +85,7 @@ export default function StudioClient({ products, categories, brands }: Props) {
           </div>
           <Link
             href="/my-quote"
-            className="inline-flex items-center gap-2 bg-[#ef473f] text-white px-5 py-3 font-extrabold text-xs tracking-wider uppercase rounded hover:opacity-90 transition-opacity whitespace-nowrap"
+            className="inline-flex items-center gap-2 bg-[#ea4a3f] text-white px-5 py-3 font-extrabold text-xs tracking-wider uppercase rounded hover:opacity-90 transition-opacity whitespace-nowrap"
           >
             Build a Quote
             <ArrowRight className="w-3.5 h-3.5" />
@@ -109,7 +109,7 @@ export default function StudioClient({ products, categories, brands }: Props) {
                   onClick={() => setActiveCategory(cat)}
                   className={`text-left text-xs font-semibold tracking-wide uppercase py-1.5 px-0 lg:px-0 transition-colors ${
                     activeCategory === cat
-                      ? "text-black font-extrabold border-l-2 border-[#ef473f] pl-2"
+                      ? "text-black font-extrabold border-l-2 border-[#ea4a3f] pl-2"
                       : "text-[#777] hover:text-black"
                   }`}
                 >
@@ -131,7 +131,7 @@ export default function StudioClient({ products, categories, brands }: Props) {
                   onClick={() => setActiveGender(gender)}
                   className={`text-left text-xs font-semibold tracking-wide uppercase py-1.5 transition-colors ${
                     activeGender === gender
-                      ? "text-black font-extrabold border-l-2 border-[#ef473f] pl-2"
+                      ? "text-black font-extrabold border-l-2 border-[#ea4a3f] pl-2"
                       : "text-[#777] hover:text-black"
                   }`}
                 >
@@ -154,7 +154,7 @@ export default function StudioClient({ products, categories, brands }: Props) {
                     onClick={() => setActiveBrand(brand)}
                     className={`text-left text-xs font-semibold tracking-wide uppercase py-1.5 transition-colors ${
                       activeBrand === brand
-                        ? "text-black font-extrabold border-l-2 border-[#ef473f] pl-2"
+                        ? "text-black font-extrabold border-l-2 border-[#ea4a3f] pl-2"
                         : "text-[#777] hover:text-black"
                     }`}
                   >
@@ -169,7 +169,7 @@ export default function StudioClient({ products, categories, brands }: Props) {
         {/* Main Content */}
         <div className="flex-1 min-w-0">
           <p className="text-xs text-[#777] tracking-wider uppercase font-semibold mb-4">
-            <span className="text-[#ef473f]">{filteredProducts.length}</span> product{filteredProducts.length !== 1 ? "s" : ""}
+            <span className="text-[#ea4a3f]">{filteredProducts.length}</span> product{filteredProducts.length !== 1 ? "s" : ""}
           </p>
 
           {filteredProducts.length > 0 ? (
@@ -203,7 +203,7 @@ export default function StudioClient({ products, categories, brands }: Props) {
         </div>
         <Link
           href="/my-quote"
-          className="inline-flex items-center gap-2.5 bg-[#ef473f] text-white px-7 py-3.5 font-extrabold text-sm tracking-wider uppercase rounded hover:opacity-90 transition-opacity whitespace-nowrap"
+          className="inline-flex items-center gap-2.5 bg-[#ea4a3f] text-white px-7 py-3.5 font-extrabold text-sm tracking-wider uppercase rounded hover:opacity-90 transition-opacity whitespace-nowrap"
         >
           Start Your Quote
           <ArrowRight className="w-4 h-4" />

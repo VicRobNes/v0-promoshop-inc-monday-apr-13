@@ -91,7 +91,7 @@ export function AdminTeamPanel() {
             disabled={!dirty}
             className={`inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider rounded transition-colors ${
               dirty
-                ? "bg-[#ef473f] text-white hover:bg-[#d93e36]"
+                ? "bg-[#ea4a3f] text-white hover:bg-[#d93e36]"
                 : "bg-[#e5e5e5] text-[#999] cursor-not-allowed"
             }`}
           >
@@ -114,13 +114,13 @@ export function AdminTeamPanel() {
                 value={member.name}
                 onChange={(e) => handleChange(i, { name: e.target.value })}
                 placeholder="Name"
-                className="flex-1 font-bold text-sm text-[#111] bg-transparent border-b border-[#e5e5e5] py-1 focus:border-[#ef473f] focus:outline-none"
+                className="flex-1 font-bold text-sm text-[#111] bg-transparent border-b border-[#e5e5e5] py-1 focus:border-[#ea4a3f] focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => handleRemove(i)}
                 aria-label="Remove team member"
-                className="text-[#999] hover:text-[#ef473f]"
+                className="text-[#999] hover:text-[#ea4a3f]"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -130,21 +130,21 @@ export function AdminTeamPanel() {
               value={member.role}
               onChange={(e) => handleChange(i, { role: e.target.value })}
               placeholder="Role / title"
-              className="w-full text-xs text-[#ef473f] font-bold uppercase tracking-wider bg-transparent border-b border-[#e5e5e5] py-1 focus:border-[#ef473f] focus:outline-none"
+              className="w-full text-xs text-[#ea4a3f] font-bold uppercase tracking-wider bg-transparent border-b border-[#e5e5e5] py-1 focus:border-[#ea4a3f] focus:outline-none"
             />
             <textarea
               value={member.description}
               onChange={(e) => handleChange(i, { description: e.target.value })}
               placeholder="One-line bio"
               rows={2}
-              className="w-full text-xs text-[#666] bg-transparent border border-[#e5e5e5] rounded p-2 focus:border-[#ef473f] focus:outline-none resize-none"
+              className="w-full text-xs text-[#666] bg-transparent border border-[#e5e5e5] rounded p-2 focus:border-[#ea4a3f] focus:outline-none resize-none"
             />
             <input
               type="text"
               value={member.imagePath ?? ""}
               onChange={(e) => handleChange(i, { imagePath: e.target.value })}
               placeholder="Image URL (optional)"
-              className="w-full text-xs text-[#666] bg-transparent border border-[#e5e5e5] rounded px-2 py-1.5 focus:border-[#ef473f] focus:outline-none"
+              className="w-full text-xs text-[#666] bg-transparent border border-[#e5e5e5] rounded px-2 py-1.5 focus:border-[#ea4a3f] focus:outline-none"
             />
           </div>
         ))}
@@ -159,28 +159,28 @@ export function AdminTeamPanel() {
             value={draft.name}
             onChange={(e) => setDraft({ ...draft, name: e.target.value })}
             placeholder="Name"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draft.role}
             onChange={(e) => setDraft({ ...draft, role: e.target.value })}
             placeholder="Role / title"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draft.description}
             onChange={(e) => setDraft({ ...draft, description: e.target.value })}
             placeholder="Bio"
-            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draft.imagePath ?? ""}
             onChange={(e) => setDraft({ ...draft, imagePath: e.target.value })}
             placeholder="Image URL (optional)"
-            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
         </div>
         <button

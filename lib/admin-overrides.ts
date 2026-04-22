@@ -28,8 +28,8 @@ export interface ThemeOverride {
 }
 
 export const DEFAULT_THEME: ThemeOverride = {
-  primary: "#ef473f",
-  accent: "#bde7ff",
+  primary: "#ea4a3f",
+  accent: "#ededed",
   surface: "#ffffff",
   text: "#111111",
 }

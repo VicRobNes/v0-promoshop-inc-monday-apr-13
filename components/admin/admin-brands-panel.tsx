@@ -110,7 +110,7 @@ export function AdminBrandsPanel() {
             onClick={handleSave}
             disabled={!dirty}
             className={`inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider rounded transition-colors ${
-              dirty ? "bg-[#ef473f] text-white hover:bg-[#d93e36]" : "bg-[#e5e5e5] text-[#999] cursor-not-allowed"
+              dirty ? "bg-[#ea4a3f] text-white hover:bg-[#d93e36]" : "bg-[#e5e5e5] text-[#999] cursor-not-allowed"
             }`}
           >
             <Save className="w-3.5 h-3.5" />
@@ -131,13 +131,13 @@ export function AdminBrandsPanel() {
                 value={brand.name}
                 onChange={(e) => handleChange(brand.slug, { name: e.target.value })}
                 placeholder="Brand name"
-                className="flex-1 font-bold text-sm text-[#111] bg-transparent border-b border-[#e5e5e5] py-1 focus:border-[#ef473f] focus:outline-none"
+                className="flex-1 font-bold text-sm text-[#111] bg-transparent border-b border-[#e5e5e5] py-1 focus:border-[#ea4a3f] focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => handleRemove(brand.slug)}
                 aria-label="Remove brand"
-                className="text-[#999] hover:text-[#ef473f]"
+                className="text-[#999] hover:text-[#ea4a3f]"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -165,7 +165,7 @@ export function AdminBrandsPanel() {
                 value={brand.logoUrl ?? ""}
                 onChange={(e) => handleChange(brand.slug, { logoUrl: e.target.value })}
                 placeholder="Logo URL — paste a public image URL here"
-                className="flex-1 text-xs text-[#666] bg-transparent border border-[#e5e5e5] rounded px-2 py-1.5 focus:border-[#ef473f] focus:outline-none"
+                className="flex-1 text-xs text-[#666] bg-transparent border border-[#e5e5e5] rounded px-2 py-1.5 focus:border-[#ea4a3f] focus:outline-none"
               />
             </div>
             <p className="text-[10px] text-[#999] -mt-2">
@@ -177,7 +177,7 @@ export function AdminBrandsPanel() {
               onChange={(e) => handleChange(brand.slug, { description: e.target.value })}
               placeholder="Short description"
               rows={2}
-              className="w-full text-xs text-[#666] bg-transparent border border-[#e5e5e5] rounded p-2 focus:border-[#ef473f] focus:outline-none resize-none"
+              className="w-full text-xs text-[#666] bg-transparent border border-[#e5e5e5] rounded p-2 focus:border-[#ea4a3f] focus:outline-none resize-none"
             />
             <input
               type="text"
@@ -191,14 +191,14 @@ export function AdminBrandsPanel() {
                 })
               }
               placeholder="Categories (comma-separated)"
-              className="w-full text-xs text-[#666] bg-transparent border border-[#e5e5e5] rounded px-2 py-1.5 focus:border-[#ef473f] focus:outline-none"
+              className="w-full text-xs text-[#666] bg-transparent border border-[#e5e5e5] rounded px-2 py-1.5 focus:border-[#ea4a3f] focus:outline-none"
             />
             <label className="flex items-center gap-2 text-xs text-[#666]">
               <input
                 type="checkbox"
                 checked={brand.featured ?? false}
                 onChange={(e) => handleChange(brand.slug, { featured: e.target.checked })}
-                className="accent-[#ef473f]"
+                className="accent-[#ea4a3f]"
               />
               Featured
             </label>
@@ -215,35 +215,35 @@ export function AdminBrandsPanel() {
             value={draft.name}
             onChange={(e) => setDraft({ ...draft, name: e.target.value })}
             placeholder="Brand name"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draft.slug}
             onChange={(e) => setDraft({ ...draft, slug: e.target.value })}
             placeholder="Slug (auto if blank)"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draft.logoUrl ?? ""}
             onChange={(e) => setDraft({ ...draft, logoUrl: e.target.value })}
             placeholder="Logo URL"
-            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draft.description}
             onChange={(e) => setDraft({ ...draft, description: e.target.value })}
             placeholder="Description"
-            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draftCategories}
             onChange={(e) => setDraftCategories(e.target.value)}
             placeholder="Categories (comma-separated)"
-            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
         </div>
         <button

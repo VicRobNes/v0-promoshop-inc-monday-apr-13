@@ -27,11 +27,11 @@ export function TeamSection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {members.map((member) => (
             <div key={member.name} className="text-center group">
-              <div className="w-28 h-28 mx-auto mb-4 rounded-full bg-[#1a1a1a] flex items-center justify-center border-2 border-[#333] group-hover:border-[#ef473f] transition-colors overflow-hidden">
+              <div className="w-28 h-28 mx-auto mb-4 rounded-full bg-[#1a1a1a] flex items-center justify-center border-2 border-[#333] group-hover:border-[#ea4a3f] transition-colors overflow-hidden">
                 <TeamMemberAvatar member={member} size={112} />
               </div>
               <h3 className="font-montserrat font-bold text-sm text-white">{member.name}</h3>
-              <p className="text-xs text-[#ef473f] font-bold uppercase tracking-wider mt-1">{member.role}</p>
+              <p className="text-xs text-[#ea4a3f] font-bold uppercase tracking-wider mt-1">{member.role}</p>
               {member.description && (
                 <p className="text-xs text-[#888] font-visby mt-2 leading-snug">{member.description}</p>
               )}

@@ -130,7 +130,7 @@ export function AdminProductsPanel() {
             onClick={handleSave}
             disabled={!dirty}
             className={`inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider rounded transition-colors ${
-              dirty ? "bg-[#ef473f] text-white hover:bg-[#d93e36]" : "bg-[#e5e5e5] text-[#999] cursor-not-allowed"
+              dirty ? "bg-[#ea4a3f] text-white hover:bg-[#d93e36]" : "bg-[#e5e5e5] text-[#999] cursor-not-allowed"
             }`}
           >
             <Save className="w-3.5 h-3.5" />
@@ -147,7 +147,7 @@ export function AdminProductsPanel() {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Filter by name, SKU, brand, category"
-          className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-[#d4d4d4] rounded-full focus:border-[#ef473f] focus:outline-none"
+          className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-[#d4d4d4] rounded-full focus:border-[#ea4a3f] focus:outline-none"
         />
       </div>
 
@@ -192,7 +192,7 @@ export function AdminProductsPanel() {
                       type="button"
                       onClick={() => handleRemove(product.sku)}
                       aria-label={`Remove ${product.name}`}
-                      className="text-[#999] hover:text-[#ef473f]"
+                      className="text-[#999] hover:text-[#ea4a3f]"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -220,33 +220,33 @@ export function AdminProductsPanel() {
             value={draft.sku}
             onChange={(e) => setDraft({ ...draft, sku: e.target.value })}
             placeholder="SKU (unique)"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draft.name}
             onChange={(e) => setDraft({ ...draft, name: e.target.value })}
             placeholder="Product name"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draft.category}
             onChange={(e) => setDraft({ ...draft, category: e.target.value })}
             placeholder="Category (e.g. Jackets)"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draft.brands}
             onChange={(e) => setDraft({ ...draft, brands: e.target.value })}
             placeholder="Brands (comma-separated)"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <select
             value={draft.gender}
             onChange={(e) => setDraft({ ...draft, gender: e.target.value })}
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           >
             <option>Unisex</option>
             <option>Mens</option>
@@ -257,14 +257,14 @@ export function AdminProductsPanel() {
             value={draft.sizes}
             onChange={(e) => setDraft({ ...draft, sizes: e.target.value })}
             placeholder="Sizes (comma-separated)"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="text"
             value={draft.colourName}
             onChange={(e) => setDraft({ ...draft, colourName: e.target.value })}
             placeholder="Default colour name"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <div className="flex items-center gap-2 bg-white border border-[#d4d4d4] rounded px-3 py-1.5">
             <input
@@ -287,21 +287,21 @@ export function AdminProductsPanel() {
             value={draft.imageUrl}
             onChange={(e) => setDraft({ ...draft, imageUrl: e.target.value })}
             placeholder="Primary image URL"
-            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <input
             type="number"
             value={draft.minQty}
             onChange={(e) => setDraft({ ...draft, minQty: Number(e.target.value) })}
             placeholder="Min. qty"
-            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none"
+            className="bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none"
           />
           <textarea
             value={draft.description}
             onChange={(e) => setDraft({ ...draft, description: e.target.value })}
             placeholder="Description"
             rows={2}
-            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ef473f] focus:outline-none resize-none"
+            className="md:col-span-2 bg-white border border-[#d4d4d4] rounded px-3 py-2 text-sm focus:border-[#ea4a3f] focus:outline-none resize-none"
           />
         </div>
         <button

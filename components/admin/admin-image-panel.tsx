@@ -260,7 +260,7 @@ export function AdminImagePanel() {
   return (
     <div className="mx-auto max-w-6xl px-6 lg:px-8 py-10">
       <header className="mb-8">
-        <p className="text-xs font-bold tracking-wider text-[#ef473f] uppercase mb-2">
+        <p className="text-xs font-bold tracking-wider text-[#ea4a3f] uppercase mb-2">
           Admin
         </p>
         <h1 className="font-montserrat font-black text-3xl lg:text-4xl leading-tight mb-3">
@@ -295,13 +295,13 @@ export function AdminImagePanel() {
               placeholder="Search images by name, section, or id…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white border border-[#d9d9d9] rounded-full pl-10 pr-4 py-2.5 text-sm font-visby outline-none focus:border-[#ef473f] transition-colors"
+              className="w-full bg-white border border-[#d9d9d9] rounded-full pl-10 pr-4 py-2.5 text-sm font-visby outline-none focus:border-[#ea4a3f] transition-colors"
             />
           </div>
           <button
             type="button"
             onClick={handleExport}
-            className="inline-flex items-center gap-2 bg-white border border-[#d9d9d9] text-[#333] px-4 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase hover:border-[#ef473f] hover:text-[#ef473f] transition-colors"
+            className="inline-flex items-center gap-2 bg-white border border-[#d9d9d9] text-[#333] px-4 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase hover:border-[#ea4a3f] hover:text-[#ea4a3f] transition-colors"
           >
             <Download className="w-4 h-4" />
             Export
@@ -311,7 +311,7 @@ export function AdminImagePanel() {
             type="button"
             onClick={handleResetAll}
             disabled={overriddenCount === 0}
-            className="inline-flex items-center gap-2 bg-white border border-[#d9d9d9] text-[#333] px-4 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase hover:border-[#ef473f] hover:text-[#ef473f] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 bg-white border border-[#d9d9d9] text-[#333] px-4 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase hover:border-[#ea4a3f] hover:text-[#ea4a3f] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Trash2 className="w-4 h-4" />
             Reset all
@@ -358,7 +358,7 @@ function ImportButton({ onFile }: { onFile: (file: File) => void }) {
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
-        className="inline-flex items-center gap-2 bg-white border border-[#d9d9d9] text-[#333] px-4 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase hover:border-[#ef473f] hover:text-[#ef473f] transition-colors"
+        className="inline-flex items-center gap-2 bg-white border border-[#d9d9d9] text-[#333] px-4 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase hover:border-[#ea4a3f] hover:text-[#ea4a3f] transition-colors"
       >
         <FolderUp className="w-4 h-4" />
         Import
@@ -571,7 +571,7 @@ function ImageRow({ slot, override }: ImageRowProps) {
                   applyUrl()
                 }
               }}
-              className="w-full bg-white border border-[#d9d9d9] rounded-md pl-8 pr-3 py-2 text-xs font-mono outline-none focus:border-[#ef473f] transition-colors"
+              className="w-full bg-white border border-[#d9d9d9] rounded-md pl-8 pr-3 py-2 text-xs font-mono outline-none focus:border-[#ea4a3f] transition-colors"
             />
           </div>
           <button
@@ -599,7 +599,7 @@ function ImageRow({ slot, override }: ImageRowProps) {
             onClick={handleReset}
             disabled={!isOverridden || uploadBusy}
             title="Reset to default"
-            className="inline-flex items-center justify-center gap-1.5 bg-white border border-[#d9d9d9] text-[#555] px-3 py-2 rounded-md text-xs font-bold uppercase tracking-wider hover:border-[#ef473f] hover:text-[#ef473f] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center gap-1.5 bg-white border border-[#d9d9d9] text-[#555] px-3 py-2 rounded-md text-xs font-bold uppercase tracking-wider hover:border-[#ea4a3f] hover:text-[#ea4a3f] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset
@@ -626,7 +626,7 @@ function ImageRow({ slot, override }: ImageRowProps) {
                 <button
                   type="button"
                   onClick={handleCancelUpload}
-                  className="text-[10px] font-bold uppercase tracking-wider text-[#ef473f] hover:underline"
+                  className="text-[10px] font-bold uppercase tracking-wider text-[#ea4a3f] hover:underline"
                 >
                   Cancel
                 </button>

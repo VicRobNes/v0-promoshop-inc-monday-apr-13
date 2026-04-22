@@ -59,7 +59,7 @@ export default function MyQuotePage() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-[#1a1a1a] text-center">
-          <div className="w-8 h-8 border-2 border-[#ef473f] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-8 h-8 border-2 border-[#ea4a3f] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="font-visby">Loading your quote...</p>
         </div>
       </div>
@@ -84,13 +84,13 @@ export default function MyQuotePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/studio"
-                className="inline-flex items-center justify-center gap-2 bg-[#ef473f] text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity"
+                className="inline-flex items-center justify-center gap-2 bg-[#ea4a3f] text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity"
               >
                 Continue Shopping
               </Link>
               <button
                 onClick={() => { clearItems(); setSubmitted(false) }}
-                className="inline-flex items-center justify-center gap-2 border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ef473f] transition-colors"
+                className="inline-flex items-center justify-center gap-2 border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ea4a3f] transition-colors"
               >
                 Start New Quote
               </button>
@@ -102,19 +102,19 @@ export default function MyQuotePage() {
     )
   }
 
-  const inputClass = "w-full bg-[#f9f9f9] border border-[#e5e5e5] text-[#1a1a1a] px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors"
-  const selectClass = "w-full bg-[#f9f9f9] border border-[#e5e5e5] text-[#1a1a1a] px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none"
+  const inputClass = "w-full bg-[#f9f9f9] border border-[#e5e5e5] text-[#1a1a1a] px-4 py-3 rounded text-sm font-visby focus:border-[#ea4a3f] focus:outline-none transition-colors"
+  const selectClass = "w-full bg-[#f9f9f9] border border-[#e5e5e5] text-[#1a1a1a] px-4 py-3 rounded text-sm font-visby focus:border-[#ea4a3f] focus:outline-none"
   const labelClass = "block text-xs font-bold tracking-wider text-[#999] uppercase mb-2"
 
   return (
-    <div className="min-h-screen bg-[#f9f9f9] text-[#1a1a1a]">
+    <div className="min-h-screen bg-[#ededed] text-[#1a1a1a]">
       <Header />
 
       <div className="py-12 px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           {/* Page Header */}
           <div className="mb-10">
-            <p className="text-xs font-bold tracking-wider text-[#ef473f] uppercase mb-2">
+            <p className="text-xs font-bold tracking-wider text-[#ea4a3f] uppercase mb-2">
               Quote Builder
             </p>
             <h1 className="font-montserrat font-bold text-3xl lg:text-4xl text-[#1a1a1a]">
@@ -143,12 +143,12 @@ export default function MyQuotePage() {
               >
                 {tab.label}
                 {"count" in tab && typeof tab.count === "number" && tab.count > 0 && (
-                  <span className="ml-2 bg-[#ef473f] text-white text-xs px-2 py-0.5 rounded-full">
+                  <span className="ml-2 bg-[#ea4a3f] text-white text-xs px-2 py-0.5 rounded-full">
                     {tab.count}
                   </span>
                 )}
                 {activeTab === tab.id && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#ef473f]" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#ea4a3f]" />
                 )}
               </button>
             ))}
@@ -165,10 +165,10 @@ export default function MyQuotePage() {
                     Add products from our Studio to start building your quote.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/studio" className="inline-flex items-center justify-center gap-2 bg-[#ef473f] text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity">
+                    <Link href="/studio" className="inline-flex items-center justify-center gap-2 bg-[#ea4a3f] text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity">
                       Browse Products <ArrowRight className="w-4 h-4" />
                     </Link>
-                    <button onClick={() => setShowAddProduct(true)} className="inline-flex items-center justify-center gap-2 border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ef473f] transition-colors">
+                    <button onClick={() => setShowAddProduct(true)} className="inline-flex items-center justify-center gap-2 border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ea4a3f] transition-colors">
                       <Plus className="w-4 h-4" /> Add Product Manually
                     </button>
                   </div>
@@ -192,15 +192,15 @@ export default function MyQuotePage() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <button onClick={() => updateItem(item.id, { quantity: Math.max(1, item.quantity - 1) })} className="w-8 h-8 flex items-center justify-center border border-[#e5e5e5] rounded hover:border-[#ef473f] transition-colors">
+                          <button onClick={() => updateItem(item.id, { quantity: Math.max(1, item.quantity - 1) })} className="w-8 h-8 flex items-center justify-center border border-[#e5e5e5] rounded hover:border-[#ea4a3f] transition-colors">
                             <Minus className="w-3 h-3" />
                           </button>
                           <span className="w-12 text-center font-bold">{item.quantity}</span>
-                          <button onClick={() => updateItem(item.id, { quantity: item.quantity + 1 })} className="w-8 h-8 flex items-center justify-center border border-[#e5e5e5] rounded hover:border-[#ef473f] transition-colors">
+                          <button onClick={() => updateItem(item.id, { quantity: item.quantity + 1 })} className="w-8 h-8 flex items-center justify-center border border-[#e5e5e5] rounded hover:border-[#ea4a3f] transition-colors">
                             <Plus className="w-3 h-3" />
                           </button>
                         </div>
-                        <button onClick={() => removeItem(item.id)} className="p-2 text-[#ccc] hover:text-[#ef473f] transition-colors">
+                        <button onClick={() => removeItem(item.id)} className="p-2 text-[#ccc] hover:text-[#ea4a3f] transition-colors">
                           <Trash2 className="w-5 h-5" />
                         </button>
                       </div>
@@ -242,23 +242,23 @@ export default function MyQuotePage() {
                         )}
                       </div>
                       <div className="flex gap-3">
-                        <button onClick={handleAddProduct} disabled={!selectedProduct} className="bg-[#ef473f] text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">Add to Quote</button>
-                        <button onClick={() => setShowAddProduct(false)} className="border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ef473f] transition-colors">Cancel</button>
+                        <button onClick={handleAddProduct} disabled={!selectedProduct} className="bg-[#ea4a3f] text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">Add to Quote</button>
+                        <button onClick={() => setShowAddProduct(false)} className="border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ea4a3f] transition-colors">Cancel</button>
                       </div>
                     </div>
                   )}
 
                   <div className="flex flex-wrap gap-4">
                     {!showAddProduct && (
-                      <button onClick={() => setShowAddProduct(true)} className="inline-flex items-center gap-2 border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ef473f] transition-colors">
+                      <button onClick={() => setShowAddProduct(true)} className="inline-flex items-center gap-2 border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ea4a3f] transition-colors">
                         <Plus className="w-4 h-4" /> Add Another Product
                       </button>
                     )}
-                    <Link href="/studio" className="inline-flex items-center gap-2 border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ef473f] transition-colors">
+                    <Link href="/studio" className="inline-flex items-center gap-2 border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ea4a3f] transition-colors">
                       Browse More Products
                     </Link>
                     {items.length > 0 && (
-                      <button onClick={() => setActiveTab("contact")} className="ml-auto inline-flex items-center gap-2 bg-[#ef473f] text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity">
+                      <button onClick={() => setActiveTab("contact")} className="ml-auto inline-flex items-center gap-2 bg-[#ea4a3f] text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity">
                         Continue <ArrowRight className="w-4 h-4" />
                       </button>
                     )}
@@ -273,7 +273,7 @@ export default function MyQuotePage() {
             <div className="bg-white border border-[#e5e5e5] rounded-lg p-6 lg:p-8 shadow-sm">
               <h3 className="font-montserrat font-bold text-xl text-[#1a1a1a] mb-4">Your Contact Information</h3>
               <p className="text-[#666] text-sm mb-6 font-visby">
-                Signed-in users can auto-fill this information. <Link href="/sign-in" className="text-[#ef473f] hover:underline">Sign in</Link> to save time.
+                Signed-in users can auto-fill this information. <Link href="/sign-in" className="text-[#ea4a3f] hover:underline">Sign in</Link> to save time.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div><label className={labelClass}>First Name *</label><input type="text" required value={contactInfo.firstName} onChange={(e) => setContactInfo({ firstName: e.target.value })} className={inputClass} placeholder="John" /></div>
@@ -284,8 +284,8 @@ export default function MyQuotePage() {
                 <div><label className={labelClass}>Job Title</label><input type="text" value={contactInfo.jobTitle} onChange={(e) => setContactInfo({ jobTitle: e.target.value })} className={inputClass} placeholder="Marketing Manager" /></div>
               </div>
               <div className="flex gap-4">
-                <button onClick={() => setActiveTab("items")} className="border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ef473f] transition-colors">Back</button>
-                <button onClick={() => setActiveTab("project")} className="ml-auto inline-flex items-center gap-2 bg-[#ef473f] text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity">Continue <ArrowRight className="w-4 h-4" /></button>
+                <button onClick={() => setActiveTab("items")} className="border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ea4a3f] transition-colors">Back</button>
+                <button onClick={() => setActiveTab("project")} className="ml-auto inline-flex items-center gap-2 bg-[#ea4a3f] text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity">Continue <ArrowRight className="w-4 h-4" /></button>
               </div>
             </div>
           )}
@@ -326,8 +326,8 @@ export default function MyQuotePage() {
               </div>
 
               <div className="flex gap-4">
-                <button type="button" onClick={() => setActiveTab("contact")} className="border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ef473f] transition-colors">Back</button>
-                <button type="submit" disabled={items.length === 0 || !contactInfo.firstName || !contactInfo.email || !contactInfo.company} className="ml-auto inline-flex items-center gap-2 bg-[#ef473f] text-white px-8 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+                <button type="button" onClick={() => setActiveTab("contact")} className="border border-[#e5e5e5] text-[#1a1a1a] px-6 py-3 font-bold uppercase tracking-wider text-sm rounded hover:border-[#ea4a3f] transition-colors">Back</button>
+                <button type="submit" disabled={items.length === 0 || !contactInfo.firstName || !contactInfo.email || !contactInfo.company} className="ml-auto inline-flex items-center gap-2 bg-[#ea4a3f] text-white px-8 py-3 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
                   Submit Quote Request <ArrowRight className="w-4 h-4" />
                 </button>
               </div>

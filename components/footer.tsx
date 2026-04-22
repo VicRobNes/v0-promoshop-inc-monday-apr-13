@@ -27,11 +27,11 @@ export function Footer() {
   }
 
   return (
-    // Footer repainted white per client feedback (Apr 16). Sky-blue (#bde7ff)
-    // accent band separates the footer from preceding sections and ties it to
-    // the brand-logo scroll that now sits on the same #bde7ff field.
-    <footer className="bg-white border-t border-[#bde7ff]">
-      <div className="h-1.5 bg-[#bde7ff]" aria-hidden="true" />
+    // Footer repainted white per client feedback. Light grey (#ededed) accent
+    // band separates the footer from preceding sections and ties it to the
+    // brand-logo scroll that now sits on the same #ededed field.
+    <footer className="bg-white border-t border-[#ededed]">
+      <div className="h-1.5 bg-[#ededed]" aria-hidden="true" />
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
           {/* Brand + Newsletter */}
@@ -67,11 +67,11 @@ export function Footer() {
                     placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 bg-white border border-[#d4d4d4] text-[#111] px-4 py-2.5 rounded-full text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors placeholder:text-[#999]"
+                    className="flex-1 bg-white border border-[#d4d4d4] text-[#111] px-4 py-2.5 rounded-full text-sm font-visby focus:border-[#ea4a3f] focus:outline-none transition-colors placeholder:text-[#999]"
                   />
                   <button
                     type="submit"
-                    className="bg-[#ef473f] text-white px-4 py-2.5 rounded-full hover:opacity-90 transition-opacity"
+                    className="bg-[#ea4a3f] text-white px-4 py-2.5 rounded-full hover:opacity-90 transition-opacity"
                     aria-label="Subscribe to newsletter"
                   >
                     <ArrowRight className="w-4 h-4" />
@@ -88,7 +88,7 @@ export function Footer() {
                   href={social.href}
                   aria-label={social.name}
                   title={social.name}
-                  className="w-10 h-10 rounded-full border border-[#d4d4d4] bg-white flex items-center justify-center text-[#666] hover:text-white hover:bg-[#ef473f] hover:border-[#ef473f] transition-colors"
+                  className="w-10 h-10 rounded-full border border-[#d4d4d4] bg-white flex items-center justify-center text-[#666] hover:text-white hover:bg-[#ea4a3f] hover:border-[#ea4a3f] transition-colors"
                 >
                   <social.icon className="w-5 h-5" />
                 </a>
@@ -106,7 +106,7 @@ export function Footer() {
                 <li key={item}>
                   <Link
                     href={item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "-")}`}
-                    className="text-sm font-visby text-[#555] hover:text-[#ef473f] transition-colors"
+                    className="text-sm font-visby text-[#555] hover:text-[#ea4a3f] transition-colors"
                   >
                     {item}
                   </Link>
@@ -125,7 +125,7 @@ export function Footer() {
                 <li key={item}>
                   <Link
                     href="/studio"
-                    className="text-sm font-visby text-[#555] hover:text-[#ef473f] transition-colors"
+                    className="text-sm font-visby text-[#555] hover:text-[#ea4a3f] transition-colors"
                   >
                     {item}
                   </Link>
@@ -143,13 +143,13 @@ export function Footer() {
               {config.allContacts.map((contact) => (
                 <li key={contact.phoneHref} className="text-sm text-[#555]">
                   <span className="block font-semibold text-[#222]">{contact.city}, {contact.region}</span>
-                  <a href={contact.phoneHref} className="hover:text-[#ef473f] transition-colors">
+                  <a href={contact.phoneHref} className="hover:text-[#ea4a3f] transition-colors">
                     {contact.phone}
                   </a>
                 </li>
               ))}
               <li className="text-sm text-[#555] pt-2">
-                <a href="mailto:info@promoshopinc.com" className="hover:text-[#ef473f] transition-colors">
+                <a href="mailto:info@promoshopinc.com" className="hover:text-[#ea4a3f] transition-colors">
                   info@promoshopinc.com
                 </a>
               </li>
@@ -158,7 +158,7 @@ export function Footer() {
         </div>
 
         {/* ADA Compliance */}
-        <div className="mt-8 p-4 bg-[#f3fafd] border border-[#bde7ff] rounded-lg">
+        <div className="mt-8 p-4 bg-[#f5f5f5] border border-[#e0e0e0] rounded-lg">
           <p className="text-xs text-[#555] font-visby leading-relaxed">
             <strong className="text-[#222]">ADA Compliance:</strong> We understand the importance of accessibility for all visitors to our website and it is something we take seriously. We are working on bringing this website in-line with WCAG 2.1 A, AA standards to ensure we provide an experience that is accessible to all. Your patience is appreciated as we work through these changes.
           </p>
@@ -172,19 +172,19 @@ export function Footer() {
           <div className="flex gap-6">
             <Link
               href="#"
-              className="text-sm font-visby text-[#777] hover:text-[#ef473f] transition-colors underline-offset-2 hover:underline"
+              className="text-sm font-visby text-[#777] hover:text-[#ea4a3f] transition-colors underline-offset-2 hover:underline"
             >
               Privacy Policy
             </Link>
             <Link
               href="#"
-              className="text-sm font-visby text-[#777] hover:text-[#ef473f] transition-colors underline-offset-2 hover:underline"
+              className="text-sm font-visby text-[#777] hover:text-[#ea4a3f] transition-colors underline-offset-2 hover:underline"
             >
               Terms of Service
             </Link>
             <Link
               href="#"
-              className="text-sm font-visby text-[#777] hover:text-[#ef473f] transition-colors underline-offset-2 hover:underline"
+              className="text-sm font-visby text-[#777] hover:text-[#ea4a3f] transition-colors underline-offset-2 hover:underline"
             >
               Shipping Policy
             </Link>

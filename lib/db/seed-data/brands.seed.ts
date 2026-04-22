@@ -26,7 +26,7 @@ export const BRANDS: Brand[] = [
     description: "Premium coolers, drinkware, and gear designed for the wild. Built to withstand the elements.",
     categories: ["Drinkware", "Coolers", "Bags"],
     featured: true,
-    logoUrl: "",
+    logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/YETI_Logo.svg/400px-YETI_Logo.svg.png",
   },
   {
     id: "stanley",

@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* PromoShop Brand Colors */
-  --ps-red: #ef473f;
+  /* PromoShop Brand Colors - Primary red #ea4a3f per client spec */
+  --ps-red: #ea4a3f;
   --ps-slate: #373a36;
   --ps-snow: #ffffff;
   --ps-sunshine: #ffc844;
@@ -22,19 +22,19 @@
   --card-foreground: #1a1a1a;
   --popover: #ffffff;
   --popover-foreground: #1a1a1a;
-  --primary: #ef473f;
+  --primary: #ea4a3f;
   --primary-foreground: #ffffff;
   --secondary: #f5f5f5;
   --secondary-foreground: #1a1a1a;
   --muted: #f0f0f0;
   --muted-foreground: #6b6b6b;
-  --accent: #ef473f;
+  --accent: #ea4a3f;
   --accent-foreground: #ffffff;
-  --destructive: #ef473f;
+  --destructive: #ea4a3f;
   --destructive-foreground: #ffffff;
   --border: #e5e5e5;
   --input: #ffffff;
-  --ring: #ef473f;
+  --ring: #ea4a3f;
   --radius: 0.75rem;
 }
 

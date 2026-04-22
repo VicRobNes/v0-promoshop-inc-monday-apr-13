@@ -86,7 +86,7 @@ function SignInPageInner() {
           </p>
 
           {error && (
-            <div className="bg-[#ef473f]/10 border border-[#ef473f]/30 text-[#ef473f] px-4 py-3 rounded mb-6 text-sm">
+            <div className="bg-[#ea4a3f]/10 border border-[#ea4a3f]/30 text-[#ea4a3f] px-4 py-3 rounded mb-6 text-sm">
               {error}
             </div>
           )}
@@ -101,7 +101,7 @@ function SignInPageInner() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-white border border-[#e5e5e5] text-[#1a1a1a] px-4 py-3.5 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors"
+                className="w-full bg-white border border-[#e5e5e5] text-[#1a1a1a] px-4 py-3.5 rounded text-sm font-visby focus:border-[#ea4a3f] focus:outline-none transition-colors"
                 placeholder="you@company.com"
               />
             </div>
@@ -116,7 +116,7 @@ function SignInPageInner() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-white border border-[#e5e5e5] text-[#1a1a1a] px-4 py-3.5 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors pr-12"
+                  className="w-full bg-white border border-[#e5e5e5] text-[#1a1a1a] px-4 py-3.5 rounded text-sm font-visby focus:border-[#ea4a3f] focus:outline-none transition-colors pr-12"
                   placeholder="Enter your password"
                 />
                 <button
@@ -131,10 +131,10 @@ function SignInPageInner() {
 
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 rounded border-[#e5e5e5] bg-white text-[#ef473f] focus:ring-[#ef473f]" />
+                <input type="checkbox" className="w-4 h-4 rounded border-[#e5e5e5] bg-white text-[#ea4a3f] focus:ring-[#ea4a3f]" />
                 <span className="text-sm text-[#666] font-visby">Remember me</span>
               </label>
-              <Link href="#" className="text-sm text-[#ef473f] hover:underline font-visby">
+              <Link href="#" className="text-sm text-[#ea4a3f] hover:underline font-visby">
                 Forgot password?
               </Link>
             </div>
@@ -142,7 +142,7 @@ function SignInPageInner() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-[#ef473f] text-white py-4 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full bg-[#ea4a3f] text-white py-4 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
@@ -161,7 +161,7 @@ function SignInPageInner() {
           <div className="mt-8 pt-8 border-t border-[#e5e5e5] text-center">
             <p className="text-[#666] font-visby">
               Don&apos;t have an account?{" "}
-              <Link href="/sign-up" className="text-[#ef473f] hover:underline font-semibold">Sign up</Link>
+              <Link href="/sign-up" className="text-[#ea4a3f] hover:underline font-semibold">Sign up</Link>
             </p>
           </div>
 

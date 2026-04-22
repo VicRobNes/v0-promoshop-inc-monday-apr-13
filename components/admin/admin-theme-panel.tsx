@@ -17,7 +17,7 @@ import {
 // updates live.
 
 const FIELDS: Array<{ key: keyof ThemeOverride; label: string; hint: string }> = [
-  { key: "primary", label: "Primary (buttons, accents)", hint: "Default #ef473f" },
+  { key: "primary", label: "Primary (buttons, accents)", hint: "Default #ea4a3f" },
   { key: "accent", label: "Accent (highlights, sky blue)", hint: "Default #bde7ff" },
   { key: "surface", label: "Surface (card backgrounds)", hint: "Default #ffffff" },
   { key: "text", label: "Text colour (body copy)", hint: "Default #111111" },
@@ -77,7 +77,7 @@ export function AdminThemePanel() {
             disabled={!dirty}
             className={`inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider rounded transition-colors ${
               dirty
-                ? "bg-[#ef473f] text-white hover:bg-[#d93e36]"
+                ? "bg-[#ea4a3f] text-white hover:bg-[#d93e36]"
                 : "bg-[#e5e5e5] text-[#999] cursor-not-allowed"
             }`}
           >
@@ -106,7 +106,7 @@ export function AdminThemePanel() {
                 type="text"
                 value={theme[key]}
                 onChange={(e) => update(key, e.target.value)}
-                className="w-full font-mono text-xs text-[#666] bg-transparent border-b border-[#e5e5e5] py-1 focus:border-[#ef473f] focus:outline-none"
+                className="w-full font-mono text-xs text-[#666] bg-transparent border-b border-[#e5e5e5] py-1 focus:border-[#ea4a3f] focus:outline-none"
               />
               <p className="text-[10px] text-[#999] mt-0.5">{hint}</p>
             </div>

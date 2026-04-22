@@ -15,7 +15,7 @@ export default function HomePage() {
       {/* Hero Section with Logo + Slideshow */}
       <section className="relative bg-[#0d0d0d] overflow-hidden">
         {/* Large red accent stripe */}
-        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#ef473f]" aria-hidden="true" />
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#ea4a3f]" aria-hidden="true" />
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-center">
             {/* Text + Logo Side */}
@@ -35,7 +35,7 @@ export default function HomePage() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/brands"
-                  className="shimmer-cta inline-flex items-center gap-2 bg-[#ef473f] text-white px-8 py-3.5 font-bold uppercase tracking-wider text-sm rounded-full hover:bg-[#d93e36] transition-colors"
+                  className="shimmer-cta inline-flex items-center gap-2 bg-[#ea4a3f] text-white px-8 py-3.5 font-bold uppercase tracking-wider text-sm rounded-full hover:bg-[#d93e36] transition-colors"
                 >
                   Browse Our Brands
                   <ArrowRight className="w-4 h-4 relative z-10" />

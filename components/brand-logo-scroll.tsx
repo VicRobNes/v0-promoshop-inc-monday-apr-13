@@ -5,17 +5,30 @@ import { SiteImage } from "@/components/site-image"
 import { brandLogoId } from "@/lib/image-registry"
 import { useImageSrc } from "@/hooks/use-image-src"
 
+// Wikipedia/CDN logo URLs for brands with confirmed public images.
+// These are used as fallbacks when no custom logo has been uploaded.
+const BRAND_LOGO_OVERRIDES: Record<string, string> = {
+  patagonia: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Patagonia_logo.svg/400px-Patagonia_logo.svg.png",
+  victorinox: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Victorinox-logo.svg/400px-Victorinox-logo.svg.png",
+  lululemon: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Lululemon_Athletica_logo.svg/400px-Lululemon_Athletica_logo.svg.png",
+  "helly-hansen": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Helly_Hansen_logo.svg/400px-Helly_Hansen_logo.svg.png",
+  yeti: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/YETI_Logo.svg/400px-YETI_Logo.svg.png",
+}
+
 export function BrandLogoScroll() {
   const brands = BRANDS
 
-  // Tile — no borders, no background. Logo floats directly on the sky-blue
-  // (#bde7ff) banner per client feedback (Apr 16). When a brand hasn't had
-  // a logo uploaded yet we fall back to a neutral wordmark sized + weighted
-  // to sit harmoniously next to real logos — so a half-populated scroll
-  // still reads as a cohesive row rather than a broken state.
+  // Tile — no borders, no background. Logo floats directly on the light grey
+  // (#ededed) banner per client feedback. When a brand hasn't had a logo
+  // uploaded yet we fall back to Wikipedia/CDN logos or a neutral wordmark
+  // styled to sit harmoniously next to real logos.
   const Tile = ({ brand, tileKey }: { brand: (typeof brands)[0]; tileKey: string }) => {
     const id = brandLogoId(brand.slug)
-    const src = useImageSrc(id, brand.logoUrl ?? "")
+    const customSrc = useImageSrc(id, brand.logoUrl ?? "")
+    // Prefer custom uploaded logo, then Wikipedia override, then text fallback
+    const overrideSrc = BRAND_LOGO_OVERRIDES[brand.slug]
+    const src = customSrc || overrideSrc
+
     return (
       <div
         key={tileKey}
@@ -25,7 +38,7 @@ export function BrandLogoScroll() {
           {src ? (
             <SiteImage
               imageId={id}
-              defaultSrc={brand.logoUrl ?? ""}
+              defaultSrc={src}
               alt={brand.name}
               width={180}
               height={72}
@@ -43,11 +56,11 @@ export function BrandLogoScroll() {
   }
 
   return (
-    <section className="py-10 bg-[#bde7ff] overflow-hidden">
+    <section className="py-10 bg-[#ededed] overflow-hidden">
       <div className="relative">
         {/* Soft fade at the edges so the scroll doesn't feel hard-cut. */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#bde7ff] to-transparent z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#bde7ff] to-transparent z-10" />
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#ededed] to-transparent z-10" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#ededed] to-transparent z-10" />
 
         {/* Scrolling container */}
         <div className="flex animate-scroll">

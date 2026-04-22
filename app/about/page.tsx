@@ -13,7 +13,7 @@ export default function AboutPage() {
       {/* Hero Section — image LEFT, text RIGHT */}
       <section className="relative bg-[#0d0d0d] overflow-hidden">
         {/* Large red accent stripe */}
-        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#ef473f]" aria-hidden="true" />
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#ea4a3f]" aria-hidden="true" />
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-center">
             {/* Image — LEFT on desktop */}
@@ -30,7 +30,7 @@ export default function AboutPage() {
 
             {/* Text — RIGHT on desktop */}
             <div className="py-16 lg:py-24 lg:pl-12 order-last">
-              <p className="text-xs font-bold tracking-wider text-[#ef473f] uppercase mb-4">
+              <p className="text-xs font-bold tracking-wider text-[#ea4a3f] uppercase mb-4">
                 {ABOUT_CONTENT.hero.eyebrow}
               </p>
               <h1 className="font-montserrat font-black text-4xl lg:text-5xl text-white leading-tight mb-6 tracking-wide">

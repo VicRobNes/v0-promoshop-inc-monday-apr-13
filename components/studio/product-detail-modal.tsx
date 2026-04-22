@@ -167,7 +167,7 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
             <button
               onClick={onClose}
               aria-label="Close"
-              className="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-black/15 flex items-center justify-center z-20 hover:bg-[#ef473f] hover:text-white transition-colors"
+              className="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-black/15 flex items-center justify-center z-20 hover:bg-[#ea4a3f] hover:text-white transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -230,7 +230,7 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
                     onClick={() => setImageIndex(i)}
                     aria-label={`Show image ${i + 1}`}
                     className={`relative w-16 h-16 rounded overflow-hidden flex-shrink-0 border-2 transition-colors ${
-                      i === imageIndex ? "border-[#ef473f]" : "border-transparent hover:border-[#999]"
+                      i === imageIndex ? "border-[#ea4a3f]" : "border-transparent hover:border-[#999]"
                     }`}
                   >
                     <Image src={img} alt="" fill className="object-cover" sizes="64px" />

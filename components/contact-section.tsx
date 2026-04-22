@@ -36,8 +36,8 @@ export function ContactSection() {
           {/* Contact Info (locale-aware) */}
           <div className="space-y-8">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#ef473f]/20 flex items-center justify-center flex-shrink-0">
-                <Phone className="w-5 h-5 text-[#ef473f]" />
+              <div className="w-12 h-12 rounded-full bg-[#ea4a3f]/20 flex items-center justify-center flex-shrink-0">
+                <Phone className="w-5 h-5 text-[#ea4a3f]" />
               </div>
               <div>
                 <h3 className="font-montserrat font-bold text-base text-white mb-2">Phone</h3>
@@ -45,7 +45,7 @@ export function ContactSection() {
                   {config.allContacts.map((contact) => (
                     <p key={contact.phoneHref}>
                       <span className="text-[#666] text-sm">{contact.phoneLabel}: </span>
-                      <a href={contact.phoneHref} className="hover:text-[#ef473f] transition-colors">{contact.phone}</a>
+                      <a href={contact.phoneHref} className="hover:text-[#ea4a3f] transition-colors">{contact.phone}</a>
                     </p>
                   ))}
                 </div>
@@ -53,14 +53,14 @@ export function ContactSection() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#ef473f]/20 flex items-center justify-center flex-shrink-0">
-                <Mail className="w-5 h-5 text-[#ef473f]" />
+              <div className="w-12 h-12 rounded-full bg-[#ea4a3f]/20 flex items-center justify-center flex-shrink-0">
+                <Mail className="w-5 h-5 text-[#ea4a3f]" />
               </div>
               <div>
                 <h3 className="font-montserrat font-bold text-base text-white mb-2">Email</h3>
                 <a 
                   href="mailto:info@promoshopinc.com" 
-                  className="text-[#888] hover:text-[#ef473f] transition-colors font-visby"
+                  className="text-[#888] hover:text-[#ea4a3f] transition-colors font-visby"
                 >
                   info@promoshopinc.com
                 </a>
@@ -68,8 +68,8 @@ export function ContactSection() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#ef473f]/20 flex items-center justify-center flex-shrink-0">
-                <MapPin className="w-5 h-5 text-[#ef473f]" />
+              <div className="w-12 h-12 rounded-full bg-[#ea4a3f]/20 flex items-center justify-center flex-shrink-0">
+                <MapPin className="w-5 h-5 text-[#ea4a3f]" />
               </div>
               <div>
                 <h3 className="font-montserrat font-bold text-base text-white mb-2">Locations</h3>
@@ -109,7 +109,7 @@ export function ContactSection() {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors placeholder:text-[#555]"
+                      className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ea4a3f] focus:outline-none transition-colors placeholder:text-[#555]"
                       placeholder="Your name"
                     />
                   </div>
@@ -123,7 +123,7 @@ export function ContactSection() {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors placeholder:text-[#555]"
+                      className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ea4a3f] focus:outline-none transition-colors placeholder:text-[#555]"
                       placeholder="you@company.com"
                     />
                   </div>
@@ -137,7 +137,7 @@ export function ContactSection() {
                     id="company"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors placeholder:text-[#555]"
+                    className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ea4a3f] focus:outline-none transition-colors placeholder:text-[#555]"
                     placeholder="Your company name"
                   />
                 </div>
@@ -151,13 +151,13 @@ export function ContactSection() {
                     rows={4}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ef473f] focus:outline-none transition-colors resize-none placeholder:text-[#555]"
+                    className="w-full bg-[#111] border border-[#333] text-white px-4 py-3 rounded text-sm font-visby focus:border-[#ea4a3f] focus:outline-none transition-colors resize-none placeholder:text-[#555]"
                     placeholder="Tell us about your project..."
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-[#ef473f] text-white py-3.5 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity"
+                  className="w-full bg-[#ea4a3f] text-white py-3.5 font-bold uppercase tracking-wider text-sm rounded hover:opacity-90 transition-opacity"
                 >
                   Send Message
                 </button>
