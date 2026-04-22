@@ -10,6 +10,7 @@ import {
   Image,
   FileText,
   Settings,
+  Users,
   LogOut,
   ChevronRight,
 } from "lucide-react"
@@ -20,6 +21,7 @@ const navItems = [
   { href: "/admin/brands", label: "Brands", icon: Tag },
   { href: "/admin/hero-slides", label: "Hero Slides", icon: Image },
   { href: "/admin/quotes", label: "Quote Requests", icon: FileText },
+  { href: "/admin/users", label: "Admin Users", icon: Users },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ]
 
